@@ -8,3 +8,6 @@ print("it is nice to meet you " + name)
 
 age = input("what is your age?")
 print(f"you are {age} years old")
+
+
+

@@ -1,3 +1,5 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Saturday Python Lab</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -44,8 +46,9 @@
   --blue: #7FB0F0; --gold: #F2B630; --gold-ink: #F5C55A; --teal: #4CC2B2; --good: #5BC983; --bad: #F08A7E;
   --code-bg: #0A111C; --hl: rgba(242,182,48,.18); color-scheme: dark;
 }
-html.big { --base: 20px; }
+html.big { --base: 20px; font-size: 118%; }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 body {
   background: var(--bg); color: var(--ink);
   font: 400 var(--base)/1.6 var(--f-body);
@@ -75,6 +78,7 @@ header.top { display: flex; flex-wrap: wrap; gap: 20px 32px; align-items: end; j
   padding: 7px 14px; cursor: pointer; font-size: .9rem; font-weight: 700;
 }
 .btn:hover { border-color: var(--blue); }
+a.btn { text-decoration: none; display: inline-block; }
 .btn.primary { background: var(--blue); border-color: var(--blue); color: var(--bg); }
 .btn[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 .progress { display: flex; align-items: center; gap: 12px; }
@@ -114,16 +118,65 @@ header.top { display: flex; flex-wrap: wrap; gap: 20px 32px; align-items: end; j
 .idea { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
 .idea > div { padding: 16px 18px; border-radius: 14px; background: var(--surface); border: 1px solid var(--line); display: grid; gap: 6px; align-content: start; }
 .idea .life { background: var(--sunk); border-color: transparent; }
-.idea .fig { margin: 0; padding: 14px 16px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface); display: grid; gap: 8px; align-content: start; }
+.see { margin: 0; }
+.see-svg { overflow-x: auto; margin-inline: -4px; }
+.see-svg svg { min-width: 560px; }
+.see-cap { margin: 0; padding: 0; list-style: none; counter-reset: c; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+.see-cap li { counter-increment: c; display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px; font-size: .93rem; align-items: start; }
+.see-cap li::before { content: counter(c); width: 24px; height: 24px; border-radius: 50%; background: var(--blue); color: var(--bg); font: 700 .8rem/24px var(--f-body); text-align: center; }
 .guide { border: 1px solid var(--line); background: var(--surface); border-radius: 16px; margin-block: 6px 18px; }
 .guide summary { cursor: pointer; padding: 14px 18px; font: 700 1rem var(--f-display); list-style: none; display: flex; justify-content: space-between; gap: 10px; }
 .guide summary::-webkit-details-marker { display: none; }
 .guide summary::after { content: "Show"; font: 700 .8rem var(--f-body); color: var(--blue); }
 .guide[open] summary::after { content: "Hide"; }
-.guide .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; padding: 0 18px 18px; }
+.guide .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 12px; padding: 0 18px 18px; }
 .guide .step { display: grid; gap: 6px; align-content: start; padding: 12px; border-radius: 12px; background: var(--sunk); font-size: .92rem; }
 .guide .step b { font-family: var(--f-display); font-size: 1rem; }
 .guide .num { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--blue); color: var(--bg); font: 800 .9rem var(--f-display); }
+.err-card { border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; background: var(--bg); }
+.err-card summary { cursor: pointer; }
+.err-card[open] { display: grid; gap: 8px; }
+.err-card p { font-size: .92rem; }
+.err-msg { font-family: var(--f-mono); font-size: .84rem; color: var(--bad); font-weight: 600; overflow-wrap: anywhere; }
+.err-pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+.err-pair > div { display: grid; gap: 4px; min-width: 0; }
+.parsons { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.parsons li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px; align-items: center; }
+.ps-btns { display: flex; gap: 3px; }
+.btn.ps { padding: 3px 8px; font-size: .8rem; min-width: 30px; }
+.btn:disabled { opacity: .35; cursor: default; }
+.ps-line { display: block; background: var(--code-bg); color: var(--code-fg); border-radius: 8px; padding-block: 8px; padding-right: 12px; white-space: pre; overflow-x: auto; font-size: .84rem; }
+.hint { margin: 6px 0 0 32px; display: grid; gap: 6px; }
+.hint-btn { justify-self: start; padding: 4px 10px; font-size: .8rem; }
+.hint-body { display: grid; gap: 6px; }
+.hint-body p { font-size: .9rem; }
+.xl { display: grid; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); }
+.xl-row { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); border-top: 1px solid var(--line); }
+.xl-row:first-child { border-top: 0; }
+.xl-row.blank { min-height: 10px; }
+.xl-row.blank .xl-code, .xl-row.blank .xl-ex { padding-block: 2px; }
+.xl-code { margin: 0; background: var(--code-bg); color: var(--code-fg); font: 400 .84rem/1.6 var(--f-mono); padding: 8px 12px; white-space: pre; overflow-x: auto; }
+.xl-n { display: inline-block; width: 2.2ch; margin-right: 10px; color: var(--code-com); text-align: right; user-select: none; }
+.xl-ex { padding: 8px 12px; font-size: .9rem; line-height: 1.5; background: var(--surface); }
+.pill.new { background: var(--gold); color: #15233A; }
+@media (max-width: 700px) { .xl-row { grid-template-columns: minmax(0, 1fr); } .xl-row.blank { display: none; } .xl-ex { padding-top: 4px; } }
+.cheat { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 6px 10px; margin: 0; }
+.cheat dt { font-family: var(--f-mono); font-size: .8rem; background: var(--sunk); padding: 4px 8px; border-radius: 6px; overflow-wrap: anywhere; }
+.cheat dd { margin: 0; font-size: .85rem; align-self: center; }
+table.reg { border-collapse: collapse; font-size: .85rem; }
+table.reg th, table.reg td { padding: 5px 7px; border-bottom: 1px solid var(--line); text-align: center; }
+table.reg th:first-child, table.reg td:first-child { text-align: left; white-space: nowrap; }
+#pbar { display: none; }
+html.present { --base: 22px; font-size: 130%; }
+html.present #pbar { font-size: 16px; }
+html.present body { padding-bottom: 100px; }
+.present #pbar { display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; gap: 10px; align-items: center; flex-wrap: wrap; padding: 10px max(16px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); background: var(--surface); border-top: 2px solid var(--line); font-size: 16px; }
+.pb-sep { flex: 1; }
+#pb-time { font-size: 1.5rem; font-variant-numeric: tabular-nums; }
+.present header.top, .present .route, .present .legend, .present .guide, .present footer, .present #week aside.side, .present #tutor, .present .skip { display: none !important; }
+.present .wrap { max-width: 1320px; }
+.present #week .grid { grid-template-columns: minmax(0, 1fr); }
+.present #week .grid > .col:first-child > *:not(.pres-on) { display: none !important; }
 g[data-kbd]:focus { outline: none; }
 g[data-kbd]:focus-visible rect { stroke: var(--gold); stroke-width: 4; }
 .skip { position: absolute; left: -999px; top: 8px; background: var(--ink); color: var(--bg); padding: 8px 12px; border-radius: 8px; z-index: 20; }
@@ -160,7 +213,10 @@ input[type="range"] { accent-color: var(--blue); width: 100%; }
 .pill.t { background: var(--good); color: var(--bg); } .pill.fz { background: var(--bad); color: var(--bg); }
 
 /* viz bits */
-svg text { fill: var(--ink); font-family: var(--f-body); }
+svg text:not([font-family]) { font-family: var(--f-body); }
+svg text[font-family] { font-family: var(--f-mono); white-space: pre; }
+code, pre, .mono, .console, textarea, svg text[font-family], input.in { font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+svg text:not([fill]):not([style*="fill"]) { fill: var(--ink); }
 .vbox { display: flex; flex-wrap: wrap; gap: 10px; }
 .var { border: 2px solid var(--blue); border-radius: 10px; padding: 6px 10px; display: grid; gap: 2px; min-width: 110px; background: var(--bg); }
 .var small { font-size: .72rem; color: var(--muted); font-weight: 700; }
@@ -225,6 +281,9 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 1px solid var(--line);
         <div><b id="doneCount">0/13</b><div class="note">stops completed</div></div>
       </div>
       <button class="btn" id="bigText" aria-pressed="false" type="button">Larger text</button>
+      <button class="btn" id="present" aria-pressed="false" type="button">Present</button>
+      <button class="btn" id="tutorBtn" aria-pressed="false" type="button" hidden>Tutor</button>
+      <span class="pill" id="syncnote" hidden>Progress synced to your tutor</span>
     </div>
   </header>
 
@@ -239,15 +298,17 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 1px solid var(--line);
       <div class="step"><span class="num">1</span><b>Pick your week</b><span>Click a numbered stop on the route above. It opens to the last week you looked at, and the address bar link goes straight to that week.</span></div>
       <div class="step"><span class="num">2</span><b>Get the idea</b><span>Read <i>The big idea</i>, the real-life example and the <i>At a glance</i> picture. Then work through the <b>Lesson pages</b> tabs in order. They follow SOL.</span></div>
       <div class="step"><span class="num">3</span><b>Play before you code</b><span>In the <b>Playground</b>, change the values and press the buttons. Watch which lines of code light up and what the output becomes. Some weeks have several playgrounds.</span></div>
-      <div class="step"><span class="num">4</span><b>Predict, then build</b><span>Guess the answer in <b>Predict the output</b> before you reveal it. Then write each activity in PyCharm, run it, and <code>git commit</code>.</span></div>
+      <div class="step"><span class="num">4</span><b>Predict, then build</b><span>Guess the answer in <b>Predict the output</b> before you reveal it. Then try it in <b>Run it yourself</b>, write each activity in VS Code or PyCharm, and <code>git commit</code>. Stuck? Each activity has hints, and <b>When it goes wrong</b> explains common errors.</span></div>
       <div class="step"><span class="num">5</span><b>Test yourself</b><span>Take the <b>Quick quiz</b> at the end of each week. Every answer explains why it's right. Reading week and Week 12 have mixed tests, a bit like the AE1 quiz.</span></div>
       <div class="step"><span class="num">6</span><b>Tick it off</b><span>Tick each activity and task as you finish it, then tick <i>I've finished this stop</i>. The ring at the top shows your progress. It's saved in this browser only.</span></div>
     </div>
     <div style="padding:0 18px 18px" class="note">Too small to read? Press <b>Larger text</b> at the top. You can use everything with the keyboard: Tab moves between controls, and Enter or Space presses them. The page follows your device's light or dark mode.</div>
   </details>
 
+  <section class="panel" id="tutor" hidden aria-label="Tutor dashboard" style="margin-block:10px 18px"></section>
   <main id="week" tabindex="-1" style="outline:none"></main>
 
+  <div id="pbar" role="toolbar" aria-label="Presenter controls"><button type="button" class="btn" id="pb-prev">← Back</button><span id="pb-pos" class="mono"></span><button type="button" class="btn primary" id="pb-next">Next →</button><span class="pb-sep"></span><span id="pb-seg" class="note"></span><b id="pb-time" class="mono">0:00</b><button type="button" class="btn" id="pb-go">Start</button><button type="button" class="btn" id="pb-skip">Next part</button><button type="button" class="btn" id="pb-exit">Exit</button></div>
   <footer>
     <span>Topics follow the QHO444 SOL outline and the roadmap.sh Python path. The playgrounds are simulations that run in your browser. Type the code into PyCharm or Thonny to run it for real.</span>
     <span>Your ticks and progress are saved only in this browser on this device.</span>
@@ -258,6 +319,7 @@ footer { margin-top: 40px; padding-top: 18px; border-top: 1px solid var(--line);
 (function () {
 /* TUTOR: change this each Saturday to the week the class is on ("1"–"12", or "R" for reading week) */
 const CLASS_WEEK = "3";
+let classWeek = CLASS_WEEK;
 
 const store = {
   get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
@@ -538,7 +600,7 @@ for s in scores:
   viz: ["dict", "json"],
   lessons: [
     { name: "Unordered", sum: "Sets and dictionaries use hashing. Python turns each element (or key) into a number that says where to store it, so checking 'is x in here?' is very fast however big the collection gets.",
-      points: [["Set", "Distinct elements only, so duplicates disappear. No index. Elements must be immutable (str, int, tuple). The set itself can change. frozenset is the fixed version."], ["Set operations", "len(s), x in s, s.add(el), s.discard(el) (no error if missing), s.remove(el) (KeyError if missing), s | t union, s & t intersection, s - t difference, s ^ t symmetric difference, s <= t subset."], ["Dictionary", "Key → value pairs. Keys are unique and values don't have to be. Since Python 3.7 a dictionary remembers the order you added things."], ["Dictionary operations", "len(d), \"k\" in d (checks keys), d[\"k\"] = v, d.pop(k), d.popitem(), d.clear(), d.keys(), d.values(), d.items(), d.get(k, default)."]],
+      points: [["Set", "Distinct elements only, so duplicates disappear. No index. Elements must be immutable (str, int, tuple). The set itself can change. frozenset is the fixed version."], ["Set operations", "len(s), x in s, s.add(el), s.discard(el) (no error if missing), s.remove(el) (KeyError if missing), s | t union, s & t intersection, s - t difference, s ^ t symmetric difference, s <= t subset."], ["Dictionary", "Key → value pairs. Keys are unique and values don't have to be. Since Python 3.7 a dictionary remembers the order you added things."], ["Dictionary operations", "len(d), \"k\" in d (checks keys), d[\"k\"] = v, d.pop(k), d.popitem(), d.clear(), d.keys(), d.values(), d.items()."], ["Extra (not on SOL)", "d.get(k, default) looks up k and gives back default instead of crashing when k is missing. It's an optional shortcut. Checking with if k in d: works just as well."]],
       fix: "On SOL, s.issubeset is a typo for s.issubset.",
       acts: [["Explain", "In your own words, say why checking x in my_set is faster than x in my_list for a million items."]] },
     { name: "Sets", sum: "Make a set with {\"a\", \"b\"} or set(). An empty {} is a dictionary, not a set. Duplicates are dropped automatically. sorted(s) gives back a sorted list.",
@@ -553,18 +615,24 @@ for s in scores:
       fix: "On SOL, run_task2 says 'call the function read', but the function is named read_task2. The example output for Activity 1 also uses a different format from the task, so either format is fine.",
       acts: [["read()", "week7/json_tasks.py: print Place Name, Population, then \"Bender has a strength level of 8 and a speed level of 5.\" for each bot. Use the JSON explorer to find the keys."], ["save()", "read_task2 loads futurama.json, then save writes it to exported.json with indent=4."]] }
   ],
-  code: `football = {"Ada", "Tunde", "Mia", "Sam"}
+  code: `import json
+
+football = {"Ada", "Tunde", "Mia", "Sam"}
 chess = {"Mia", "Leo", "Ada"}
 print(football & chess)      # in both clubs
 
 grades = {"Ada": 72, "Tunde": 65, "Mia": 81}
 grades["Leo"] = 58           # add a new key
-print(grades.get("Sam", "no grade yet"))
+print(grades["Mia"])         # 81
 
-import json
-with open("grades.json", "w") as f:
-    json.dump(grades, f)`,
-  codeNote: "<code>grades[\"Sam\"]</code> would crash with a KeyError. <code>.get()</code> lets you give a default instead.",
+if "Sam" in grades:
+    print(grades["Sam"])
+else:
+    print("Sam has no grade yet")
+
+with open("grades.json", "w") as file:
+    json.dump(grades, file, indent=4)`,
+  codeNote: "Always check a key with <code>in</code> before looking it up. <code>grades[\"Sam\"]</code> on its own would crash with a KeyError.",
   predict: { code: `s = {1, 2, 2, 3, 3, 3}\nprint(len(s))\nd = {"a": 1}\nd["a"] = 5\nprint(d)`, answer: `3\n{'a': 5}\n\nSets drop duplicates. Assigning to an existing key replaces the old value.` },
   tasks: [["Core", "set_tasks.py: observed, count observations, remove and sort."], ["Core", "dictionary_tasks.py: pattern, keys/values/pairs, dictionary of dictionaries."], ["Core", "json_tasks.py: read futurama.json and export it."], ["Starter", "Make a dictionary of 5 words and their meanings. Ask the user for a word and print the meaning, or 'not found'."], ["Core", "Count how many times each word appears in a sentence using a dictionary."], ["Stretch", "Save your contacts dictionary to contacts.json, then load it back in a separate program."]] },
 { id: "8", short: "Visualisation", title: "Third-party libraries: data visualisation", half2: true,
@@ -618,7 +686,7 @@ plt.show()`,
       points: [["Clamp", "def eat(self, amount):\n    self.energy = min(self.energy + amount, self.MAX_ENERGY)\n\ndef move(self, distance):\n    self.energy = max(self.energy - distance, 0)"]],
       acts: [["grow, eat, move", "Add all three to Human and Robot. Test them in the Inhabitant lab first, then in Python."]] },
     { name: "Objects together", sum: "Objects can hold other objects. A Planet has lists of humans and robots, and a Universe has a list of planets. This 'has a' relationship is called composition.",
-      points: [["Planet", "class Planet:\n    def __init__(self, name):\n        self.name = name\n        self.inhabitants = {\"humans\": [], \"robots\": []}\n\n    def add_human(self, human):\n        self.inhabitants[\"humans\"].append(human)"], ["Universe", "import random\nfor _ in range(random.randint(1, 10)):\n    planet.add_human(Human())"]],
+      points: [["Planet", "class Planet:\n    def __init__(self, name):\n        self.name = name\n        self.inhabitants = {\"humans\": [], \"robots\": []}\n\n    def add_human(self, human):\n        self.inhabitants[\"humans\"].append(human)"], ["Universe", "import random\nfor count in range(random.randrange(1, 11)):\n    planet.add_human(Human())"]],
       acts: [["Planet", "planet.py with add_human, remove_human, add_robot, remove_robot, __repr__ and __str__."], ["Use a dictionary", "Replace the two lists with inhabitants = {'humans': [], 'robots': []}."], ["Universe", "universe.py: generate() makes a planet with a random number of humans and robots."], ["show_populations", "Use matplotlib to plot humans, robots or the total for each planet. Try it in the Universe playground."]] }
   ],
   code: `class Student:
@@ -632,7 +700,7 @@ plt.show()`,
 s1 = Student("Ada", "QHO444")
 print(s1.greet())`,
   codeNote: "Each call to <code>Student(...)</code> makes a new, separate object.",
-  predict: { code: `class Counter:\n    def __init__(self):\n        self.n = 0\n    def tick(self):\n        self.n += 1\n\na = Counter(); b = Counter()\na.tick(); a.tick(); b.tick()\nprint(a.n, b.n)`, answer: `2 1\n\nEach object has its own self.n. Ticking a doesn't change b.` },
+  predict: { code: `class Counter:\n    def __init__(self):\n        self.n = 0\n    def tick(self):\n        self.n += 1\n\na = Counter()\nb = Counter()\na.tick()\na.tick()\nb.tick()\nprint(a.n, b.n)`, answer: `2 1\n\nEach object has its own self.n. Ticking a doesn't change b.` },
   tasks: [["Core", "human.py and robot.py: attributes, display, __repr__/__str__, grow/eat/move."], ["Core", "planet.py (lists, then a dictionary) and universe.py with generate() and show_populations()."], ["Revise", "Complete the AE1 practice quiz on SOL."], ["Starter", "Write a Phone class with brand, model and battery attributes, and a charge() method that sets battery to 100."], ["Core", "BankAccount with deposit() and withdraw(). Refuse a withdrawal that would go below 0."], ["Stretch", "Store several Student objects in a list and print the ones on a given course."]] },
 { id: "10", short: "Inheritance", title: "OOP: inheritance and abstraction", half2: true,
   idea: "A child class inherits everything from its parent and can add to it or override it. An abstract class sets out what every child must provide but can't be used on its own.",
@@ -678,7 +746,7 @@ human = Human()
 human.move(10)        # move() comes from Inhabitant
 print(human.energy)   # 90`,
   codeNote: "<code>Human</code> only writes what's different. <code>move()</code> and the attributes come from <code>Inhabitant</code>, and <code>Inhabitant()</code> itself can't be created because it's abstract.",
-  predict: { code: `class A:\n    def hi(self): return "A"\nclass B(A):\n    pass\nclass C(A):\n    def hi(self): return "C"\nprint(B().hi(), C().hi())`, answer: `A C\n\nB has no hi() of its own, so Python looks up to the parent A. C overrides it.` },
+  predict: { code: `class A:\n    def hi(self):\n        return "A"\n\nclass B(A):\n    pass    # pass means: nothing extra here\n\nclass C(A):\n    def hi(self):\n        return "C"\n\nprint(B().hi(), C().hi())`, answer: `A C\n\nB has no hi() of its own, so Python looks up to the parent A. C overrides it.` },
   tasks: [["Core", "inhabitant.py as the parent. Human and Robot extend it."], ["Core", "Planet with one inhabitants list and isinstance counts in Universe."], ["Core", "Make Inhabitant abstract, then build the Tech / Laser / JetPack / Alien classes."], ["Starter", "Make a Vehicle parent class and Car and Bike children that each override describe()."], ["Core", "Add a super().__init__() call so a Car also stores the number of doors."], ["Stretch", "Make Shape abstract with an area() method, then write Circle and Rectangle."]] },
 { id: "11", short: "Case studies", title: "Case studies: Titanic and Olympics", half2: true,
   idea: "Everything comes together on real data. Read a CSV with the <code>csv</code> module, loop over the records, count with variables and dictionaries, offer a menu, and say what the numbers tell you. pandas is an optional extension that does the same in fewer lines.",
@@ -759,7 +827,7 @@ const QUIZ = {
     ["csv.reader gives ['1', 'Shirt', 'Mercury']. What type is '1'?", "", ["int", "str", "float", "bool"], 1, "Everything from a CSV comes in as text. Use int() when you need a number."],
     ["Why use with open(...) as file:?", "", ["It's faster", "It closes the file for you", "It's required for CSV files", "It reads in binary"], 1, "The file is closed automatically at the end of the with block, even if there's an error."]],
   "7": [["What is len({1, 2, 2, 3})?", "", ["4", "3", "2", "Error"], 1, "Sets keep only unique values, so the duplicate 2 disappears."],
-    ["What does this print?", 'd = {"a": 1}\nprint(d.get("b", "none"))', ["KeyError", "None", "none", "1"], 2, ".get() returns the default when the key is missing. d[\"b\"] would raise a KeyError."],
+    ["What does this print?", 'd = {"a": 1}\nif "b" in d:\n    print(d["b"])\nelse:\n    print("none")', ["KeyError", "None", "none", "1"], 2, "in checks the keys. \"b\" isn't a key, so the else runs. Writing d[\"b\"] without the check would crash with a KeyError."],
     ["What does for k in d: loop over?", "", ["Values", "Keys", "Pairs", "Indexes"], 1, "Looping over a dictionary gives its keys. Use .values() or .items() for the others."],
     ["What does {} create?", "", ["An empty set", "An empty dictionary", "An empty list", "An error"], 1, "{} is an empty dict. Use set() for an empty set."],
     ["a = {1, 2, 3}, b = {2, 3, 4}. What is a & b?", "", ["{1, 2, 3, 4}", "{2, 3}", "{1}", "{1, 4}"], 1, "& is intersection: the items in both sets."],
@@ -772,7 +840,7 @@ const QUIZ = {
   "9": [["What is self?", "", ["The class", "The current object", "A module", "A keyword you pass in"], 1, "self refers to the object the method is working on."],
     ["When does __init__ run?", "", ["When the file is imported", "When an object is created", "When print is called", "Never on its own"], 1, "Human() creates an object, and __init__ sets up its attributes."],
     ["print(robot) uses which method?", "", ["__repr__", "__str__", "__init__", "display"], 1, "print uses __str__ (friendly text). repr() uses __repr__."],
-    ["What does this print?", "class Counter:\n    def __init__(self):\n        self.n = 0\n    def tick(self):\n        self.n += 1\n\na = Counter(); b = Counter()\na.tick(); a.tick()\nprint(a.n, b.n)", ["2 2", "2 0", "0 0", "1 1"], 1, "Each object has its own self.n."],
+    ["What does this print?", "class Counter:\n    def __init__(self):\n        self.n = 0\n    def tick(self):\n        self.n += 1\n\na = Counter()\nb = Counter()\na.tick()\na.tick()\nprint(a.n, b.n)", ["2 2", "2 0", "0 0", "1 1"], 1, "Each object has its own self.n."],
     ["energy is 90 and MAX_ENERGY is 100. After eat(30), energy should be…", "", ["120", "100", "30", "90"], 1, "Cap it with min(self.energy + amount, self.MAX_ENERGY)."]],
   "10": [["In class Human(Inhabitant):, what is Human?", "", ["The parent class", "A child class (subclass)", "An object", "A module"], 1, "Human extends, or inherits from, Inhabitant."],
     ["Human has no move() method. What does human.move(10) do?", "", ["AttributeError", "Uses Inhabitant's move()", "Does nothing", "Creates move()"], 1, "Python looks in Human, then goes up to the parent."],
@@ -787,26 +855,308 @@ const QUIZ = {
     ["What does f\"|{'Gold':<10}|\" print?", "", ["|Gold|", "|Gold      |", "|      Gold|", "|   Gold   |"], 1, "< left-aligns and pads to 10 characters with spaces on the right."]]
 };
 
-/* one small concept figure per week */
+/* ---------- error decoder: [message, what it means, broken code, fixed code] ---------- */
+const ERRS = {
+  "1": [["SyntaxError: unterminated string literal", "A string was opened with a quote but never closed.", 'print("Hello)', 'print("Hello")'],
+    ["NameError: name 'Print' is not defined", "Python is case-sensitive. Print and print are different names, and only print exists.", 'Print("Hi")', 'print("Hi")'],
+    ["TypeError: can only concatenate str (not \"int\") to str", "input() gave you text, and Python won't add text to a number.", 'age = input("Age? ")\nprint(age + 1)', 'age = int(input("Age? "))\nprint(age + 1)'],
+    ["ValueError: invalid literal for int() with base 10: 'abc'", "int() was given something that isn't a whole number, such as letters or 1.5.", "int(\"abc\")   # user typed abc", "Type a whole number, or use float() for decimals"]],
+  "2": [["IndentationError: expected an indented block", "The line after if …: must be indented, with 4 spaces.", 'if x > 3:\nprint("big")', 'if x > 3:\n    print("big")'],
+    ["SyntaxError: expected ':'", "Every if, elif and else line ends with a colon.", "if x > 3\n    print(x)", "if x > 3:\n    print(x)"],
+    ["SyntaxError: invalid syntax (on if x = 5:)", "= stores a value. Use == to compare.", "if x = 5:", "if x == 5:"],
+    ["TypeError: '>' not supported between instances of 'str' and 'int'", "You compared text from input() with a number.", 'age = input()\nif age > 18:', 'age = int(input())\nif age > 18:']],
+  "3": [["(no error: the program never stops)", "An infinite loop. The condition never becomes False because the counter never changes. Press the red stop button or Ctrl+C.", "count = 0\nwhile count < 5:\n    print(count)", "count = 0\nwhile count < 5:\n    print(count)\n    count = count + 1"],
+    ["IndexError: string index out of range", "The last index is len(word) - 1, not len(word).", "word[len(word)]", "word[len(word) - 1]   # or word[-1]"],
+    ["TypeError: 'str' object cannot be interpreted as an integer", "range() needs a number, but input() gives text.", "for i in range(input()):", "for i in range(int(input())):"],
+    ["(no error: one step missing)", "Off by one: range stops BEFORE the stop value.", "for i in range(1, 10):   # 1..9", "for i in range(1, 11):   # 1..10"]],
+  "4": [["NameError: name 'listen' is not defined", "You called the function before defining it, or spelled it differently.", "listen()\ndef listen(): ...", "def listen(): ...\nlisten()"],
+    ["TypeError: escape_by() missing 1 required positional argument: 'plan'", "The function expects an argument and you didn't give one.", "escape_by()", 'escape_by("jumping over")'],
+    ["TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'", "Your function prints the answer but doesn't return it, so you got None.", "def add(a, b):\n    print(a + b)", "def add(a, b):\n    return a + b"],
+    ["ModuleNotFoundError: No module named 'week1'", "Python is running from a different folder, so it can't find week1. Run main.py from the project's top folder.", "python week4/main.py   (from inside week4)", "cd to the project folder, then: python main.py"]],
+  "5": [["IndexError: list index out of range", "There's no item at that position. A list of 4 has indexes 0–3.", "steps = [\"a\", \"b\", \"c\", \"d\"]\nsteps[4]", "steps[3]   # or steps[-1]"],
+    ["TypeError: 'tuple' object does not support item assignment", "Tuples can't be changed after they're created.", "t = (1, 2)\nt[0] = 5", "Use a list [1, 2] if it must change"],
+    ["ValueError: list.remove(x): x not in list", "You tried to remove something that isn't in the list.", 'steps.remove("Jump")', 'if "Jump" in steps:\n    steps.remove("Jump")'],
+    ["AttributeError: 'tuple' object has no attribute 'append'", "Tuples have no add or remove methods.", "likelihoods = (50, 38)\nlikelihoods.append(4)", "likelihoods = [50, 38]   # a list can grow\nlikelihoods.append(4)"]],
+  "6": [["FileNotFoundError: [Errno 2] No such file or directory: 'library.txt'", "Python looked in the current working folder and the file isn't there. Print os.getcwd() to see where it's looking.", 'open("library.txt")   # file is in week6/', 'open("week6/library.txt")   # or run from week6'],
+    ["ValueError: could not convert string to float: ''", "There's a blank line, usually the last one in the file.", "total += float(line)", "if line.strip():\n    total += float(line)"],
+    ["io.UnsupportedOperation: not writable", "The file was opened for reading but you tried to write to it.", 'f = open("out.txt")\nf.write("hi")', 'f = open("out.txt", "w")\nf.write("hi")'],
+    ["(no error: blank lines between every line)", "Each line already ends in \\n, and print adds another one.", "print(line)", "print(line.strip())"]],
+  "7": [["KeyError: 'Sam'", "That key isn't in the dictionary.", 'print(grades["Sam"])', 'if "Sam" in grades:\n    print(grades["Sam"])'],
+    ["TypeError: unhashable type: 'list'", "Set items and dictionary keys must be unchangeable, so lists aren't allowed.", "{[1, 2], [3, 4]}", "{(1, 2), (3, 4)}   # use tuples"],
+    ["json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes", "JSON needs double quotes and no trailing commas.", "{'name': 'Bender',}", '{"name": "Bender"}'],
+    ["TypeError: 'set' object is not subscriptable", "Sets have no order, so there's no [0].", "observations[0]", "sorted(observations)[0]"]],
+  "8": [["ModuleNotFoundError: No module named 'matplotlib'", "matplotlib isn't installed for the Python you're running.", "import matplotlib.pyplot as plt", "In the terminal: python -m pip install matplotlib"],
+    ["(no error: no window appears)", "The figure was built but never shown.", "plt.plot(x, y)", "plt.plot(x, y)\nplt.show()"],
+    ["ValueError: x and y must have same first dimension, but have shapes (5,) and (4,)", "Your x and y lists have different lengths.", "plt.plot([1, 2, 3, 4, 5], [1, 4, 9, 16])", "plt.plot([1, 2, 3, 4, 5], [1, 4, 9, 16, 25])"],
+    ["(no error: numbers in a strange order on the axis)", "The values are strings from input(), so they're plotted as labels.", "x = input()", "x = float(input())"]],
+  "9": [["TypeError: Robot.display() takes 0 positional arguments but 1 was given", "Instance methods need self as their first parameter.", "def display():", "def display(self):"],
+    ["NameError: name 'name' is not defined", "Inside a method, the object's data is reached through self.", 'print(f"I am {name}")', 'print(f"I am {self.name}")'],
+    ["AttributeError: 'Robot' object has no attribute 'energy'", "That attribute was never set. Create it in __init__ with self.", "def __init__(self):\n    energy = 0", "def __init__(self):\n    self.energy = 0"],
+    ["(prints <robot.Robot object at 0x…>)", "There's no __str__ method, so Python shows the default text.", "print(robot)", "def __str__(self):\n    return f\"Robot {self.name}\""]],
+  "10": [["TypeError: Can't instantiate abstract class Inhabitant", "Abstract classes can't be turned into objects. Make a child class instead.", "Inhabitant()", "Human()"],
+    ["AttributeError: 'Human' object has no attribute 'name'", "The child's __init__ replaced the parent's, so name was never set.", "def __init__(self):\n    self.colour = \"blue\"", "def __init__(self):\n    super().__init__(\"Human\")\n    self.colour = \"blue\""],
+    ["NameError: name 'abstractmethod' is not defined", "You used the decorator without importing it.", "from abc import ABC", "from abc import ABC, abstractmethod"],
+    ["ModuleNotFoundError: No module named 'inhabitant'", "Run the file from the oop folder, or import it with its package path.", "from inhabitant import Inhabitant", "from oop.inhabitant import Inhabitant   # from the project root"]],
+  "11": [["ValueError: invalid literal for int() with base 10: '22.5'", "Some ages are decimals and some are blank.", "age = int(record[5])", "if record[5] != \"\":\n    age = float(record[5])"],
+    ["IndexError: list index out of range", "There's an empty line at the end of the file, or you used the wrong column number.", "record[12]", "Check len(record), and skip blank rows with if record:"],
+    ["UnicodeDecodeError: 'charmap' codec can't decode byte", "Windows read the file with the wrong encoding.", 'open("athlete_events.csv")', 'open("athlete_events.csv", encoding="utf-8")'],
+    ["KeyError: 'NA'", "Most athletes didn't win a medal (NA), and that isn't a key in the tally.", "tally[medal] += 1", 'if medal != "NA":\n    tally[medal] += 1']]
+};
+
+/* ---------- line-by-line explanations of "The code we write in class" (one entry per line; "" for blank lines; "NEW: " marks something not met before) ---------- */
+const EXPLAIN = {
+  "1": ["Shows the question and waits for the user to type. Whatever they type is stored in the variable name, as text (str).", "An f-string: the f before the quotes lets Python swap {name} for the value stored in name.", "", "input() always gives text, so int( ) turns it into a whole number we can do maths with.", "float( ) turns the text into a decimal number, like 1.68.", "Same again for weight. Each answer goes into its own variable.", "", "** means 'to the power of', so height ** 2 is height squared. The brackets make Python do that first, then divide.", "NEW: {bmi:.2f} shows bmi with 2 decimal places (.2) as a decimal number (f). 21.9671 becomes 21.97. This is the 'format to 2 decimal places' challenge from SOL."],
+  "2": ["Read the cover type and keep it as text.", "", "Is the text exactly \"soft\"? == compares two values. The colon starts the block that runs only when the answer is True.", "Indented, so this only runs for soft covers: ask the follow-up question.", "A nested if: a second decision inside the first one.", "Runs only when both answers matched: soft AND perfect bound.", "This else lines up with the inner if, so it means: soft, but not perfect bound.", "The message for soft covers with coils or stitches.", "This else lines up with the first if, so it catches every cover that isn't \"soft\".", "Only reached for hard (or any other) covers."],
+  "3": ["Ask how many apples to remove, and turn the answer into a whole number.", "A counter that starts at 0. It counts how many apples have been removed so far.", "", "The loop: keep repeating the indented lines while the counter is smaller than the number asked for.", "Add 1 to the counter. Without this line the condition never becomes False, and the loop runs forever.", "The work done on each pass of the loop.", "", "Not indented, so it runs once, after the loop has finished."],
+  "4": ["def defines a function called calculate_bmi. weight and height are its parameters: names for the values it will be given.", "Inside the function (indented): work out the BMI from the two parameters.", "NEW: round(bmi, 2) is a built-in function (it's in SOL's list of built-ins) that rounds to 2 decimal places. return sends the answer back to whoever called the function.", "", "A second function, main, that runs the whole program. It has no parameters.", "Read the weight as a decimal number and keep it in w.", "Read the height into h.", "calculate_bmi(w, h) calls the first function, passing w and h in as arguments. Its return value is printed.", "", "Defining functions does nothing on its own. This line starts the program by calling main()."],
+  "5": ["Square brackets make a list. This one holds three strings, in order.", "append adds an item to the END of the list.", "insert(0, \"tea\") puts \"tea\" at index 0, the front, and moves everything else along one place.", "[0] is the first item and [-1] is the last one. This prints: tea rice", "len( ) counts the items. The list now has 5.", "", "Round brackets make a tuple. A map position never changes, so a tuple suits it.", "Commented out (#) because it would crash: you can't change an item in a tuple."],
+  "6": ["A main function that holds the whole program.", "open( ) connects to the file sales.txt. \"r\" means read. sales_file now points at the open file.", "A running total that starts at 0.0 (a decimal, because the sales have pence).", "", "Looping over a file gives you one line at a time, as text.", "float(line) turns the text (like \"50.3\\n\") into a number, then adds it to the total.", "", "After the loop: {total:.2f} shows the total with 2 decimal places, as in week 1.", "Close the file to free it. Later this week, with open(...) does this for you.", "", "Call main( ) to run the program."],
+  "R": ["A comment: Python ignores it. It tells the reader what the code is for.", "A function that takes one score and works out a grade.", "Check the highest band first.", "return ends the function straight away and sends \"First\" back.", "Only checked if the first condition was False.", "Sends back \"Pass\".", "If neither return ran, we reach this line, so the score must be under 40.", "", "A list of three scores.", "Loop through the list: s takes each score in turn.", "Call grade(s) for each score and print the score next to its grade."],
+  "7": ["Load Python's json module so we can save to a file at the end. Imports go at the top of a file.", "", "Curly brackets with single items make a set: unique names, in no particular order.", "A second set.", "& keeps only the names that are in BOTH sets. It prints {'Ada', 'Mia'}, though the order may differ.", "", "Curly brackets with key: value pairs make a dictionary. Each name (the key) points to a grade (the value).", "Giving a value to a new key adds it. If the key already existed, its value would be replaced.", "Look up a value by its key, not by position. This prints 81.", "", "in checks the dictionary's KEYS. Asking for grades[\"Sam\"] when Sam isn't a key would crash with a KeyError, so check first.", "Only runs when \"Sam\" is a key.", "Otherwise…", "…print a message instead, so the program doesn't crash.", "", "Open grades.json for writing (\"w\"). with closes the file for us at the end of the block.", "json.dump writes the dictionary into the file as JSON text. indent=4 spreads it over several lines so it's easy to read."],
+  "8": ["Import the pyplot part of matplotlib and call it plt for short. Install it once with pip install matplotlib.", "", "The labels along the x-axis, one per bar.", "The numbers, one per day, in the same order as the days.", "", "Draw a bar chart: each day gets a bar as tall as its number.", "A title above the chart.", "Label the x-axis.", "Label the y-axis.", "Open the window with the chart. Without this line nothing appears."],
+  "9": ["class starts a blueprint called Student. Class names start with a capital letter.", "__init__ runs automatically every time a new Student is made. self means 'this student'. name and course are passed in.", "Store the name inside this object, as self.name.", "Store the course too. Every Student object keeps its own copy.", "", "A method: a function that belongs to the class. It takes self so it can reach this object's data.", "Build and return a sentence using this object's own name and course.", "", "Make a real Student object. Python calls __init__ with name \"Ada\" and course \"QHO444\".", "Call the method on s1. You don't pass self, because Python does that for you."],
+  "10": ["Import ABC (Abstract Base Class) from Python's abc module.", "", "Inhabitant extends ABC, so it's abstract: you can't create an Inhabitant itself, only its children.", "A class attribute, shared by every inhabitant.", "", "The parent's initialiser. The = values are defaults, used when nothing is passed in.", "Store the name on the object.", "Store the age.", "Store the energy.", "", "A method that every child will inherit.", "max( ) gives the bigger of two values (week 5), so energy can never go below 0.", "", "Human(Inhabitant) means Human IS an Inhabitant and inherits everything above.", "Human's own initialiser, with \"Human\" as the default name.", "super() means the parent class. This runs Inhabitant's __init__, so name, age and energy are set.", "", "A method that only Human has.", "Print this human's name.", "", "Create a Human: name \"Human\", age 0, energy 100.", "Human has no move() of its own, so Python uses the one from Inhabitant.", "100 − 10 = 90."],
+  "11": ["EXTENSION, not needed for the SOL tasks: pandas is a data library (pip install pandas). pd is its short name.", "", "Read the whole CSV into a DataFrame (a table) in one line.", ".shape gives (rows, columns).", "", "groupby(\"Pclass\") splits the rows by class. [\"Survived\"].mean() averages the 0s and 1s, which gives the survival rate.", "Times 100 for a percentage, rounded to 1 decimal place.", "", "Draw the result as a bar chart. pandas uses matplotlib behind the scenes."],
+  "12": ["A function that takes the question to ask as a parameter.", "NEW: a docstring, which is a comment in triple quotes saying what the function does. Python skips it when running.", "while True: repeats forever, until a return (or break) stops it. You met while True in the Week 4 main.py menu.", "Ask the question and keep the answer as text.", "NEW: text.isdigit() is True only when every character is 0–9, so \"abc\", \"-3\" and \"\" fail. The int(text) > 0 part also rejects 0.", "A good answer: return ends the function (and the loop) and sends back the number.", "A bad answer: this runs, then the loop goes round and asks again."]
+};
+
+function renderCodeExplained(w) {
+  const el = document.getElementById("cd-body"); if (!el) return;
+  const lines = w.code.split("\n"), ex = EXPLAIN[w.id];
+  const on = !!ex && store.get("spl-explain", true);
+  const tog = document.getElementById("cd-toggle");
+  if (tog) { tog.hidden = !ex; tog.setAttribute("aria-pressed", String(on)); tog.textContent = on ? "Hide explanations" : "Explain each line"; }
+  if (!on) { el.innerHTML = codeHTML(w.code); return; }
+  el.innerHTML = `<div class="xl">${lines.map((l, i) => { const t = ex[i] || ""; const isNew = t.startsWith("NEW: "); return `<div class="xl-row${l.trim() ? "" : " blank"}"><pre class="xl-code"><span class="xl-n">${i + 1}</span>${hl(l)}</pre><p class="xl-ex">${isNew ? '<span class="pill new">NEW</span> ' : ""}${esc(isNew ? t.slice(5) : t)}</p></div>`; }).join("")}</div>`;
+}
+
+/* ---------- tiered hints per activity title: [nudge, closer, key line] ---------- */
+const HINTS = {
+  "1": { "Simple message": ["You only need the print function and some text in quotes.", "Put a # comment line above it that says what the code does.", 'print("Welcome to QHO444!")'],
+    "Multi-line": ["Use one print() per line of output.", "An empty print() gives a blank line.", 'print()\nprint("...How to use Git and GitHub")'],
+    "Escape characters": ["You need a new line, a tab, and quotes that show up in the output.", "\\n is a new line, \\t is a tab, and \\\" prints a double quote.", 'print("\\n\\t\\"I am programming!\\"")'],
+    "ASCII robot": ["Start from the four-line box.", "Change the middle lines to add eyes and a mouth. Watch out for backslashes: use \\\\.", 'print("#  o  o  #")'],
+    "Reading input": ["Show the question with print(), then read the answer with input().", "Store the answer in a variable, then use an f-string.", 'name = input()\nprint(f"It is nice to meet you {name}")'],
+    "Robot eyes": ["Read one character and keep it in a variable.", "Put the variable inside the robot's eye line with an f-string.", 'print(f"#  {eye}  {eye}  #")'],
+    "BMI": ["You need four inputs. Age is an int, and height and weight are floats.", "BMI = weight / (height ** 2)", 'print(f"{name} you are {age} years old and your bmi is {bmi:.2f}.")'],
+    "Game health bar": ["Read three whole numbers with int(input()).", "\"♥\" * 3 gives ♥♥♥.", 'print(f"Lives:  {"♥" * lives}")'],
+    "Create a repo": ["Do it on github.com: New repository.", "Tick: Private, Add a README, .gitignore template Python, and a licence.", "Name it qho444"],
+    "First push": ["Three commands, in order.", "Stage, then commit with a message, then push.", 'git add .\ngit commit -m "Testing PyCharm with GitHub"\ngit push'] },
+  "2": { "Books": ["Read the book type, then make one decision.", "The final message isn't indented, so it always runs.", 'if book_type == "adventure":\n    print("I like adventure books!")'],
+    "Activity": ["You need an if with an else.", "The last print sits outside both branches.", 'if activity == "calculate":\n    print("Performing calculations...")\nelse:'],
+    "Robot maze": ["Four directions, so one if, three elifs and an else for anything unknown.", "Compare the input with \"up\", \"down\", \"left\" and \"right\".", 'elif direction == "down":\n    print("I am moving in a downward direction!")'],
+    "Even or odd": ["Convert the input to int first.", "Even means the remainder after dividing by 2 is 0.", "if number % 2 == 0:"],
+    "Smallest": ["There are three outcomes, so use if / elif / else.", "Check first < second, then first > second, else equal.", "elif first > second:\n    print(\"The second number is the smallest!\")"],
+    "Book covers": ["The inner question is only asked for soft covers.", "Put the second input() and its if INSIDE the first if, indented.", 'if cover == "soft":\n    bound = input()\n    if bound == "yes":'],
+    "Find my phone": ["The outer if/elif/elif/else picks the room.", "Each room has its own inner if/else for the spot.", 'elif room == "in the living room":\n    spot = input()\n    if spot == "on the table":'],
+    "Even/odd counter": ["Start two counters at 0.", "Check each number with % 2 and add 1 to the right counter.", "if first % 2 == 0:\n    even_count += 1\nelse:\n    odd_count += 1"],
+    "Mini adventure": ["Two values lead to the forest, so join them with or.", "Each side of the or must be a full comparison.", 'if adventure == "scary" or adventure == "short":'],
+    "Dark forest": ["Both answers must match, so use and.", "Read both inputs before the if.", 'if heard == "grrr" and saw == "two red eyes":'] },
+  "3": { "Apples": ["You need a counter starting at 0 and a while loop.", "Loop while the counter is less than the number asked for, and add 1 each time.", "while removed < apples:\n    print(\"Removed apple.\")\n    removed = removed + 1"],
+    "Obstacles": ["Print \"Avoiding...\" without moving to a new line.", "Use end=\"\" on the first print.", 'print("Avoiding...", end="")\nprint(f"Done! {count} obstacles avoided.")'],
+    "Battery": ["Count the bars, then draw that many █ characters.", "\"█ \" * bars repeats the block.", 'print("Charging:", "█ " * bars)'],
+    "Repeat Hi": ["len(phrase) tells you how many times.", "Loop while count < len(phrase).", 'print("Hi", end=" ")'],
+    "Sum 100": ["You need a total and a counter.", "Add the counter to the total inside the loop, then increase the counter.", "while number <= 100:\n    total = total + number\n    number = number + 1"],
+    "Sum user numbers": ["Ask how many first, then loop that many times.", "Inside the loop, read one number and add it to total.", 'value = int(input(f"Please enter number {count} of {how_many}:"))'],
+    "Mountains": ["A for loop is a good fit because you know how many to draw.", "Put the mountain's print lines inside the loop.", "for count in range(mountains):"],
+    "Countdown": ["Count down with a negative step.", "range(start, stop, step): start at the number and stop at 0.", "for steps in range(target, 0, -1):"],
+    "Brightness": ["Even numbers start at 2 and step by 2.", "The stop value is level + 1 so that level itself is included.", 'for level in range(2, brightness + 1, 2):\n    print("Brightness level:", "*" * level)'],
+    "Characters": ["Loop over the positions 0 to len(word) - 1.", "range(len(word)) gives exactly those positions.", 'print(f"index {position}: {word[position]}")'],
+    "Reverse": ["Start at the last index, len - 1, and go down to 0.", "range(len(phrase) - 1, -1, -1)", "reversed_phrase = reversed_phrase + phrase[position]"],
+    "Membership": ["You don't need the index here.", "for letter in phrase: gives each character directly.", "for letter in phrase:\n    print(letter)"],
+    "Emoji grid": ["The outer loop is rows and the inner loop is columns.", "Use end=\" \" inside, then an empty print() after the inner loop.", 'for row in range(rows):\n    for col in range(cols):\n        print(":-)", end=" ")\n    print()'],
+    "Marker distance": ["Find the position of the first marker, then the second.", "Loop with an index. When you see the marker, record the position.", "distance = second_position - first_position - 1"] },
+  "4": { "ASCII value": ["Check that len(text) == 1 first.", "ord() turns a character into its code.", 'print(f"The ASCII code for {letter} is: {ord(letter)}")'],
+    "ASCII character": ["Convert with abs(int(...)), then check the range.", "range(32, 127) includes 32 to 126.", "if code in range(32, 127):\n    print(chr(code))"],
+    "listen()": ["def, a name, empty brackets and a colon.", "Indent the body, then call it underneath with no indent.", 'def listen():\n    sound = input("What sound did you hear? ")\n    print(f"That was a loud {sound}!")'],
+    "identify()": ["The same pattern as listen(), with an if inside.", "Compare the answer with \"a large boulder\".", 'if thing == "a large boulder":\n    print("It\'s time to run!")'],
+    "escape_by(plan)": ["The parameter goes inside the brackets of the def line.", "Use if / elif / elif / else on plan.", "def escape_by(plan):\n    if plan == \"jumping over\":"],
+    "cross_bridge(steps)": ["Loop steps times, then make one decision after the loop.", "The if goes after the loop, not inside it.", "for step in range(steps):\n    print(\"Crossed step.\")\nif steps > 5:"],
+    "climb_ladder(remaining, crossed)": ["Two parameters, separated by a comma.", "Compare them with >.", "def climb_ladder(remaining, crossed):\n    if remaining > crossed:"],
+    "Ladder": ["display_ladder draws the rungs, and create_ladder asks for the number of steps.", "Loop steps times, printing | | then ***, and finish with one more | |.", "def create_ladder():\n    steps = int(input(\"How many steps remain? \"))\n    display_ladder(steps)"],
+    "Weights": ["sum_weights returns a + b.", "calc_avg_weight calls sum_weights and divides by 2.", "def calc_avg_weight(person, inventory):\n    return sum_weights(person, inventory) / 2"],
+    "Word tools": ["Write and test one function at a time.", "Build the reversed word with a loop that counts down, as in the week 3 Reverse task.", 'backwards = ""\nfor position in range(len(word) - 1, -1, -1):\n    backwards = backwards + word[position]\nprint(f"{word} | {backwards}")'],
+    "Guess the number": ["random.randrange(minimum, maximum + 1) picks a number from minimum to maximum. The + 1 is needed because the stop value is never included.", "Loop while guess != secret.", "while guess != secret:\n    if guess < secret:\n        print(\"Your guess is too low.\")"],
+    "main.py menu": ["Wrap each old task in a function first.", "Import each week's file with import week1.output_tasks as wk1_output.", 'if response == "a":\n    run_week_one()'] },
+  "5": { "directions()": ["Create the list, then return it.", "Lists use square brackets.", 'steps = ["Move Forward", "Move Backward", "Turn Left", "Turn Right"]\nreturn steps'],
+    "movements()": ["The list alternates direction, steps, direction, steps.", "Step through it in 2s: range(0, len(path), 2).", 'print(f"{path[i]} for {path[i + 1]} steps")'],
+    "menu()": ["Loop with an index so you can print the number.", "range(len(steps)) gives the indexes.", 'print(f"{index}: {steps[index]}")'],
+    "Escape route": ["menu_and_input returns steps[int(choice)].", "In run_task4, call it 5 times in a loop and append each result.", "route.append(menu_and_input())"],
+    "likelihood()": ["Tuples use round brackets.", "min() gives the smallest value.", "likelihoods = (50, 38, 27, 99, 4)\nreturn min(likelihoods)"],
+    "likelihood_min_max()": ["Return two values together.", "return (min(...), max(...)) and unpack them later.", "low, high = likelihood_min_max()"],
+    "Good and bad steps": ["Each item is a tuple, so step[1] is its likelihood.", "Append the tuple to good_steps or bad_steps.", "if step[1] >= 50:\n    bad_steps.append(step)"] },
+  "6": { "cwd()": ["import os first.", "os.getcwd() gives the path and os.listdir(path) gives the files.", "for file in os.listdir(path):\n    print(file)"],
+    "library.txt": ["Three functions: read(n), readline() and read().", "Use with open(path) as file: so it closes by itself.", "with open(path) as file:\n    print(file.read(n))"],
+    "search()": ["Loop over the file to get one line at a time.", "strip() removes the \\n.", 'for line in file:\n    print(f"Looked in {line.strip()}")'],
+    "Sort books": ["line.startswith(\"Section\") is True when the line begins with that word. Use it in an if.", "Add the line plus \"\\n\" to sections or to books.", 'return f"{sections}\\n\\n{books}"'],
+    "read_csv()": ["import csv, then csv.reader(file).", "next(reader) gives the heading row.", "headings = next(reader)\nfor values in reader:\n    print(values)"],
+    "extract()": ["Skip the headings with next().", "The name is values[1].", 'names = names + values[1] + "\\n"'],
+    "export()": ["Open in \"a\" mode so the old rows stay.", "Write the three answers joined by commas, plus \\n.", 'file.write(f"{item_id},{item_name},{item_colour}\\n")'] },
+  "7": { "observed()": ["Sets use curly brackets.", "Duplicates vanish on their own.", 'observations = {"Car", "Sky Scraper", "Sky Scraper", "Bike", "House", "House"}'],
+    "Count observations": ["Read 7 values into a list first.", "For each value, add (value, data.count(value)) to a set.", "counts.add((item, observations.count(item)))"],
+    "Remove and sort": ["Loop while the answer is yes.", "list.remove(x) removes the first match.", "for item, count in sorted(set_of_counts):"],
+    "pattern()": ["Write key: value pairs inside {}.", "Return the dictionary.", 'sequences = {"Short Sequence": 3, "Medium Sequence": 2, "Long Sequence": 1}'],
+    "Keys, values, pairs": ["Loop over data for the keys and over data.values() for the values.", "data.items() gives key, value pairs.", 'for key, value in data.items():\n    print(f"{key}: {value}")'],
+    "Dictionary of dictionaries": ["Each pattern function returns a small dictionary.", "Put their return values in an outer dictionary.", 'patterns = {"short sequence": short_pattern(), ...}'],
+    "read()": ["json.load(file) gives you a dictionary.", "data[\"bots\"] is a list, so loop over it.", 'print(f"{bot[\'name\']} has a strength level of {bot[\'stats\'][\'strength\']}...")'],
+    "save()": ["Open the file for writing.", "json.dump(data, file, indent=4)", 'with open(file_path, "w") as file:\n    json.dump(data, file, indent=4)'] },
+  "8": { "display_line(x, y)": ["Two parameters, then plt.plot and plt.show.", "Call it from run_task1 with your two lists.", "plt.plot(x_values, y_values)\nplt.show()"],
+    "Three squares": ["A square needs 5 points so it closes back at the start.", "Format strings: \"ro:\", \"gs--\" and \"bp-\".", 'plt.plot([3, 4, 4, 3, 3], [3, 3, 4, 4, 3], "ro:")'],
+    "Path": ["coordinate() returns a tuple (x, y).", "Append data[0] to x_values and data[1] to y_values.", 'plt.plot(values[0], values[1], "ro--")'],
+    "Dictionary styles": ["Store the answers under keys like \"line\", \"colour\" and \"marker\".", "Join them into one format string.", 'plt.plot(xs, ys, style["colour"] + style["marker"] + style["line"])'] },
+  "9": { "Person": ["The class has __init__ with name, age=0, weight=0.", "Every attribute starts with self.", 'jane = Person("Jane Smith", 26)\njane.display()'],
+    "Human and Robot": ["MAX_ENERGY = 100 goes directly in the class, not in __init__.", "energy starts at MAX_ENERGY for humans and 0 for robots.", "self.energy = Human.MAX_ENERGY"],
+    "repr and str": ["Both methods return a string. They don't print.", "__str__ is friendly and __repr__ is precise.", 'def __str__(self):\n    return f"Human {self.name} is {self.age} years old."'],
+    "grow, eat, move": ["Each method changes self.age or self.energy.", "Use min() and max() to keep energy in range.", "self.energy = min(self.energy + amount, self.MAX_ENERGY)"],
+    "Planet": ["Two empty lists in __init__.", "add_human appends to self.humans.", "def add_human(self, human):\n    self.humans.append(human)"],
+    "Use a dictionary": ["Swap the two lists for one dictionary.", "Reach a list through its key.", 'self.inhabitants["humans"].append(human)'],
+    "Universe": ["generate() creates a planet and fills it.", "random.randrange(1, 11) picks a number from 1 to 10.", "for count in range(random.randrange(1, 11)):\n    planet.add_human(Human())"],
+    "show_populations": ["Build a list of names and a list of counts.", "Pick which counts to use with if / elif / else on selection.", "plt.bar(names, counts)\nplt.show()"] },
+  "10": { "Inhabitant": ["Move name, age, energy, eat, grow and move into Inhabitant.", "Each child calls super().__init__(name).", "class Human(Inhabitant):\n    def __init__(self, name=\"Human\"):\n        super().__init__(name)"],
+    "Planet": ["One list, self.inhabitants.", "add_inhabitant and remove_inhabitant work for any type.", "self.inhabitants.append(inhabitant)"],
+    "Universe": ["Count humans and robots with isinstance.", "Add 1 to the right counter inside the loop.", "if isinstance(inhabitant, Human):\n    humans += 1"],
+    "Make Inhabitant abstract": ["Import ABC.", "Put it in the brackets of the class line.", "from abc import ABC\n\nclass Inhabitant(ABC):"],
+    "Alien Tech": ["Tech(ABC) has two @abstractmethod methods.", "Laser and JetPack each write activate and deactivate, plus fire or fly.", "class Laser(Tech):\n    def activate(self):\n        print(\"Laser charging...\")"] },
+  "11": { "load_data()": ["Use global records and headings.", "headings = next(reader), then append each remaining row.", "for values in csv_reader:\n    records.append(values)"],
+    "display_menu()": ["Print the options with one print or a triple-quoted string.", "Return int(input()).", "return int(input())"],
+    "Option 1: names": ["The name is column 3.", "Loop over records.", "print(record[3])"],
+    "Option 2: survivors": ["Survived is column 1, as \"0\" or \"1\".", "Convert with int() and count the 1s.", "if int(record[1]) == 1:\n    num_survived += 1"],
+    "Option 3: gender": ["Sex is column 4.", "Two counters, males and females.", 'if record[4] == "male":\n    males += 1'],
+    "Option 4: age groups": ["Skip blank ages first.", "Use float(), then if / elif / else.", 'if record[5] != "":\n    age = float(record[5])'],
+    "Option 5: challenge": ["The same loop as option 4.", "Inside each age group, also check record[1].", 'children += 1\nif record[1] == "1":\n    children_survived += 1'],
+    "tui.py": ["Each function only prints or reads, with no calculations.", "Use f-string padding for the columns.", 'print(f"| {"Gold":<10} | {tally["Gold"]:<10} |")'],
+    "main.py": ["read_data skips the heading row with next(reader).", "run() loops until the user chooses exit.", 'elif selection == "tally":\n    process.tally_medals(athlete_data)'],
+    "process.py": ["A set gives you unique years.", "Nested dictionaries: tally[team][medal] += 1.", 'if team not in tally:\n    tally[team] = {"Gold": 0, "Silver": 0, "Bronze": 0}'] }
+};
+
+/* ---------- put-the-lines-in-order puzzles: [code line, indent level] ---------- */
+const PARSONS = {
+  "1": { t: "BMI calculator", lines: [['name = input("What is your name? ")', 0], ['height = float(input("Height (m)? "))', 0], ['weight = float(input("Weight (kg)? "))', 0], ["bmi = weight / (height ** 2)", 0], ['print(f"{name}, your bmi is {bmi:.2f}")', 0]] },
+  "2": { t: "Robot maze", lines: [['direction = input("Which direction? ")', 0], ['if direction == "up":', 0], ['print("I am moving in an upward direction!")', 1], ['elif direction == "down":', 0], ['print("I am moving in a downward direction!")', 1], ["else:", 0], ['print("I do not know that direction.")', 1]] },
+  "3": { t: "Apple robot (while loop)", lines: [['apples = int(input("How many apples should I remove? "))', 0], ["removed = 0", 0], ["while removed < apples:", 0], ['print("Removed apple.")', 1], ["removed = removed + 1", 1], ['print("All apples removed")', 0]] },
+  "4": { t: "escape_by(plan)", lines: [["def escape_by(plan):", 0], ['if plan == "cross bridge ahead":', 1], ['print("That might just work! Let\'s go!")', 2], ["else:", 1], ['print("We cannot escape that way!")', 2], ['escape_by("cross bridge ahead")', 0]] },
+  "5": { t: "Direction menu", lines: [["def directions():", 0], ['return ["Move Forward", "Move Backward", "Turn Left", "Turn Right"]', 1], ["def menu():", 0], ["steps = directions()", 1], ["for index in range(len(steps)):", 1], ['print(f"{index}: {steps[index]}")', 2], ["menu()", 0]] },
+  "R": { t: "Grade a list of scores", lines: [["def grade(score):", 0], ["if score >= 70:", 1], ['return "First"', 2], ["elif score >= 40:", 1], ['return "Pass"', 2], ['return "Fail"', 1], ["for s in [72, 38, 55]:", 0], ["print(s, grade(s))", 1]] },
+  "6": { t: "Search the library file", lines: [["def search(file_path):", 0], ['print("Searching...")', 1], ["with open(file_path) as file:", 1], ["for line in file:", 2], ['print(f"Looked in {line.strip()}")', 3], ['print("...Done!")', 1]] },
+  "7": { t: "Print a dictionary's pairs", lines: [["def display_items(data):", 0], ["for key, value in data.items():", 1], ['print(f"{key}: {value}")', 2], ['sequences = {"Short Sequence": 3, "Long Sequence": 1}', 0], ["display_items(sequences)", 0]] },
+  "8": { t: "display_line", lines: [["import matplotlib.pyplot as plt", 0], ["def display_line(x_values, y_values):", 0], ["plt.plot(x_values, y_values)", 1], ["plt.show()", 1], ["display_line([1, 2, 3, 4, 5], [1, 4, 9, 16, 25])", 0]] },
+  "9": { t: "Human class", lines: [["class Human:", 0], ["MAX_ENERGY = 100", 1], ["def __init__(self):", 1], ['self.name = "Human"', 2], ["self.energy = Human.MAX_ENERGY", 2], ["def display(self):", 1], ['print(f"I am {self.name}")', 2]] },
+  "10": { t: "Robot extends Inhabitant", lines: [["from inhabitant import Inhabitant", 0], ["class Robot(Inhabitant):", 0], ['def __init__(self, name="Robot"):', 1], ["super().__init__(name)", 2], ["def display(self):", 1], ['print(f"I am {self.name}")', 2]] },
+  "11": { t: "Count the survivors", lines: [["def display_num_survivors():", 0], ["num_survived = 0", 1], ["for record in records:", 1], ["if int(record[1]) == 1:", 2], ["num_survived += 1", 3], ['print(f"{num_survived} passengers survived.")', 1]] },
+  "12": { t: "Ask until the input is valid", lines: [["def get_positive_int(prompt):", 0], ["while True:", 1], ["text = input(prompt)", 2], ["if text.isdigit() and int(text) > 0:", 2], ["return int(text)", 3], ['print("Please enter a whole number above 0.")', 2]] }
+};
+
+/* ---------- one-screen cheat sheets: [syntax, meaning] ---------- */
+const CHEAT = {
+  "1": [['print("Hi")', "show text"], ["# note", "comment, ignored by Python"], ["\\n  \\t  \\\"", "new line, tab, quote"], ["x = input()", "read text"], ["int(x)  float(x)  str(x)", "convert type"], ['f"Hi {name}"', "put a variable in text"], ['"♥" * 3', "repeat a string"], ["git add . → commit -m → push", "save to GitHub"]],
+  "2": [["if x > 3:", "decision (ends in :)"], ["elif …:", "another check"], ["else:", "everything else"], ["==  !=  <  >  <=  >=", "compare"], ["and  or  not", "combine conditions"], ["x % 2 == 0", "is x even?"], ["4 spaces", "marks the block"]],
+  "3": [["while count < 5:", "repeat while True"], ["count += 1", "update the counter"], ["for i in range(5):", "0 1 2 3 4"], ["range(start, stop, step)", "stop not included"], ["range(7, 0, -1)", "count down"], ["for ch in word:", "each character"], ["word[0]  word[-1]", "first, last"], ['print(x, end="")', "stay on the line"]],
+  "4": [["def name(param):", "define a function"], ["name(arg)", "call it"], ["return value", "send a result back"], ["len()  abs()  ord()  chr()", "built-ins"], ["import random as rnd", "use a module"], ["from random import randrange", "import one function"], ['if __name__ == "__main__":', "run only directly"]],
+  "5": [["xs = [1, 2, 3]", "list (changeable)"], ["t = (1, 2)", "tuple (fixed)"], ["xs[0]  xs[-1]  xs[1:3]", "index and slice"], ["xs.append(x)  xs.insert(0, x)", "add"], ["xs.remove(x)  xs.pop()", "remove"], ["len(xs)  min(xs)  max(xs)", "size, smallest, largest"], ["for x in xs:", "loop over items"], ["x in xs", "membership"]],
+  "R": [["Weeks 1–6", "everything below"], ["input → int()", "convert before maths"], ["if / elif / else", "one path runs"], ["while / for / range", "repeat"], ["def / return", "reuse"], ["[ ] vs ( )", "list vs tuple"], ['with open(p, "r")', "read a file"]],
+  "6": [['open(p, "r" / "w" / "a")', "read, overwrite, append"], ["with open(p) as f:", "auto close"], ["f.read()  f.readline()", "all, or one line"], ["for line in f:", "line by line"], ["line.strip()", "remove \\n and spaces"], ["import csv; csv.reader(f)", "rows as lists"], ["next(reader)", "skip headings"], ["os.getcwd()", "where am I?"]],
+  "7": [['s = {"a", "b"}', "set (unique)"], ["set()", "empty set ({} is a dict)"], ["a | b  a & b  a - b", "union, both, difference"], ['d = {"k": 1}', "dictionary"], ['d["k"]   "k" in d', "look up, check a key"], ["for k, v in d.items():", "pairs"], ["json.load(f)  json.dump(d, f)", "read, write JSON"]],
+  "8": [["import matplotlib.pyplot as plt", "import"], ["plt.plot(x, y)", "line"], ['plt.plot(x, y, "ro--")', "red circles, dashed"], ["plt.bar(x, y)  plt.step(x, y)", "bar, step"], ["plt.pie(sizes, labels=…)", "pie"], ["plt.xlabel(…)  plt.ylabel(…)", "label axes"], ["plt.show()", "open the window"]],
+  "9": [["class Robot:", "blueprint"], ["def __init__(self, name):", "set up an object"], ["self.name = name", "instance attribute"], ["MAX_ENERGY = 100", "class attribute"], ['r = Robot("Bender")', "create an object"], ["r.display()", "call a method"], ["__str__  __repr__", "print text"]],
+  "10": [["class Human(Inhabitant):", "inherit"], ["super().__init__(name)", "run the parent setup"], ["isinstance(obj, Human)", "type check"], ["from abc import ABC, abstractmethod", "abstract tools"], ["class Tech(ABC):", "abstract class"], ["@abstractmethod", "children must write it"]],
+  "11": [["record[3]", "a column by index"], ["if record[5] != \"\":", "skip blanks"], ["float(record[5])", "ages can be decimals"], ["years = set()", "unique values"], ['tally[team]["Gold"] += 1', "nested count"], ['f"{s:<10}"', "pad to 10, left"], ["sorted(years, reverse=True)", "newest first"]],
+  "12": [["Plan", "steps in English"], ["Small functions", "one job each"], ["Validate input", "isdigit() in a while loop"], ["Test", "normal, edge, wrong"], ["Comment why", "not just what"], ["Commit often", "clear messages"]]
+};
+
+/* one explained figure per week: { svg, cap: [numbered reading steps] } */
 const FIG = (() => {
-  const box = (x, y, w, h, t, o = {}) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${o.r ?? 8}" fill="${o.fill || "var(--surface)"}" stroke="${o.stroke || "var(--blue)"}" stroke-width="2"/>` + (t ? `<text x="${x + w / 2}" y="${y + h / 2 + 4}" text-anchor="middle" font-size="${o.fs || 12}" ${o.mono ? 'font-family="JetBrains Mono, monospace"' : ""} font-weight="${o.bold ? 700 : 400}">${t}</text>` : "");
-  const arr = (x1, y1, x2, y2, c = "var(--muted)") => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="2" marker-end="url(#fa)"/>`;
-  const lab = (x, y, t, o = {}) => `<text x="${x}" y="${y}" text-anchor="${o.a || "middle"}" font-size="${o.fs || 11}" fill="${o.c || "var(--muted)"}" ${o.mono ? 'font-family="JetBrains Mono, monospace"' : ""}>${t}</text>`;
-  const wrap = (s, alt) => `<svg viewBox="0 0 260 120" style="width:100%;height:auto;display:block" role="img" aria-label="${alt}"><defs><marker id="fa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0L10,5L0,10z" fill="var(--muted)"/></marker></defs>${s}</svg>`;
+  const M = 'font-family="JetBrains Mono, monospace"';
+  const T = (x, y, t, o = {}) => `<text x="${x}" y="${y}" text-anchor="${o.a || "middle"}" font-size="${o.fs || 14}" font-weight="${o.b ? 700 : 400}" fill="${o.c || "var(--ink)"}" ${o.m ? M : ""} ${o.i ? 'font-style="italic"' : ""}>${t}</text>`;
+  const B = (x, y, w, h, lines, o = {}) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${o.r ?? 10}" fill="${o.fill || "var(--surface)"}" stroke="${o.s || "var(--blue)"}" stroke-width="${o.sw || 2}" ${o.dash ? 'stroke-dasharray="7 5"' : ""}/>` + lines.map((l, i) => T(x + w / 2, y + h / 2 + 5 + (i - (lines.length - 1) / 2) * (o.lh || 19), l, { m: o.m, fs: o.fs || 14, b: o.b && i === 0, c: o.tc })).join("");
+  const A = (pts, o = {}) => `<polyline points="${pts.map(p => p.join(",")).join(" ")}" fill="none" stroke="${o.c || "var(--muted)"}" stroke-width="${o.w || 2.5}" ${o.dash ? 'stroke-dasharray="6 5"' : ""} marker-end="url(#fg-${o.k || "m"})"/>`;
+  const N = (x, y, n, label) => `<circle cx="${x}" cy="${y}" r="12" fill="var(--blue)"/><text x="${x}" y="${y + 5}" text-anchor="middle" font-size="13" font-weight="700" fill="var(--bg)">${n}</text>` + (label ? T(x + 20, y + 5, label, { a: "start", fs: 14, b: true }) : "");
+  const D = (cx, cy, w, h, t, o = {}) => `<polygon points="${cx},${cy - h / 2} ${cx + w / 2},${cy} ${cx},${cy + h / 2} ${cx - w / 2},${cy}" fill="${o.fill || "var(--surface)"}" stroke="${o.s || "var(--gold)"}" stroke-width="2.5"/>` + T(cx, cy + 5, t, { m: true, fs: 14 });
+  const mk = (id, c) => `<marker id="fg-${id}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" fill="${c}"/></marker>`;
+  const wrap = (h, s, alt) => `<svg viewBox="0 0 720 ${h}" style="width:100%;height:auto;display:block" role="img" aria-label="${alt}"><defs>${mk("m", "var(--muted)")}${mk("g", "var(--gold)")}${mk("b", "var(--blue)")}${mk("ok", "var(--good)")}</defs>${s}</svg>`;
+  const term = (x, y, w, h, lines, fs = 15) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10" fill="var(--code-bg)"/>` + lines.map((l, i) => `<text x="${x + 14}" y="${y + 26 + i * 20}" font-size="${fs}" fill="var(--code-fg)" ${M}>${l}</text>`).join("");
+  const varBox = (x, y, w, name, val, type, hl) => `<rect x="${x}" y="${y}" width="${w}" height="70" rx="10" fill="${hl ? "var(--hl)" : "var(--surface)"}" stroke="var(--gold)" stroke-width="2.5"/><rect x="${x + 10}" y="${y - 11}" width="${name.length * 9 + 16}" height="22" rx="6" fill="var(--gold)"/>` + T(x + 18 + name.length * 4.5, y + 5, name, { m: true, fs: 13, c: "#15233A", b: true }) + T(x + w / 2, y + 44, val, { m: true, fs: 18, b: true }) + (type ? T(x + w - 10, y + 63, type, { a: "end", fs: 12, c: "var(--muted)", m: true }) : "");
   return {
-    "1": wrap(box(6, 40, 64, 36, "input()", { mono: true }) + arr(72, 58, 96, 58) + box(98, 34, 64, 48, "", { stroke: "var(--gold)" }) + lab(130, 52, "name", { c: "var(--ink)", mono: true }) + lab(130, 70, '"Ada"', { mono: true }) + arr(164, 58, 188, 58) + box(190, 40, 64, 36, "print()", { mono: true }) + lab(38, 100, "keyboard") + lab(130, 100, "variable (box)") + lab(222, 100, "screen"), "Input goes into a variable, then print shows it"),
-    "2": wrap(`<polygon points="70,14 120,44 70,74 20,44" fill="var(--surface)" stroke="var(--gold)" stroke-width="2"/>` + lab(70, 48, "age ≥ 18 ?", { c: "var(--ink)" }) + arr(120, 44, 170, 30) + arr(70, 74, 70, 96) + box(172, 14, 80, 30, "come in", { stroke: "var(--good)" }) + box(30, 92, 80, 24, "sorry", { stroke: "var(--bad)" }) + lab(146, 30, "True") + lab(90, 90, "False"), "A decision sends the program down one of two paths"),
-    "3": wrap(`<path d="M60,30 A40,32 0 1,1 59,30" fill="none" stroke="var(--blue)" stroke-width="3" marker-end="url(#fa)"/>` + lab(60, 62, "repeat", { c: "var(--ink)", fs: 13 }) + box(130, 20, 124, 30, "while still True", { mono: true, fs: 11 }) + box(130, 64, 124, 30, "for i in range(5)", { mono: true, fs: 11 }) + lab(192, 112, "0 1 2 3 4", { mono: true }), "A loop goes round and round while a condition stays True"),
-    "4": wrap(lab(26, 50, "12", { c: "var(--ink)", fs: 16 }) + lab(26, 74, "6", { c: "var(--ink)", fs: 16 }) + arr(40, 60, 78, 60) + box(80, 30, 100, 60, "", { fill: "var(--sunk)", stroke: "var(--ink)", r: 12 }) + lab(130, 56, "def", { c: "var(--ink)", mono: true }) + lab(130, 72, "sum_weights", { c: "var(--ink)", mono: true }) + arr(182, 60, 216, 60) + lab(236, 66, "18", { c: "var(--gold-ink)", fs: 18 }) + lab(26, 104, "arguments") + lab(236, 104, "return"), "A function takes arguments in and returns a value"),
-    "5": wrap([0, 1, 2, 3].map(i => box(14 + i * 60, 30, 52, 34, ['"fwd"', '"back"', '"left"', '"right"'][i], { mono: true, fs: 11 }) + lab(40 + i * 60, 82, `[${i}]`, { mono: true }) + lab(40 + i * 60, 98, `[${i - 4}]`, { mono: true })).join("") + lab(130, 18, "list: ordered, starts at 0", { c: "var(--ink)" }), "A list stores items in order, numbered from index 0"),
-    "6": wrap(`<path d="M14,16 h52 l14,14 v74 h-66z" fill="var(--surface)" stroke="var(--blue)" stroke-width="2"/>` + ["10.25", "50.3", "20.25"].map((v, i) => lab(42, 46 + i * 18, v, { mono: true, c: "var(--ink)" })).join("") + arr(84, 60, 120, 60) + box(122, 40, 66, 40, "for line", { mono: true, fs: 11 }) + arr(190, 60, 214, 60) + lab(236, 64, "£80.80", { c: "var(--gold-ink)", fs: 12 }) + lab(48, 116, "sales.txt"), "A file is read line by line in a loop"),
-    "R": wrap(["Loops", "Lists", "Files"].map((t, i) => lab(14, 34 + i * 30, t, { a: "start", c: "var(--ink)" }) + `<rect x="70" y="${24 + i * 30}" width="170" height="12" rx="6" fill="var(--sunk)"/><rect x="70" y="${24 + i * 30}" width="${[150, 90, 50][i]}" height="12" rx="6" fill="${i === 2 ? "var(--gold)" : "var(--teal)"}"/>`).join("") + lab(130, 114, "spend time on the shortest bar"), "Rate your confidence and revise the weakest topic"),
-    "7": wrap(`<circle cx="60" cy="58" r="40" fill="none" stroke="var(--blue)" stroke-width="2"/><circle cx="100" cy="58" r="40" fill="var(--hl)" stroke="var(--teal)" stroke-width="2"/>` + lab(80, 62, "&amp;", { c: "var(--ink)", fs: 14 }) + lab(80, 112, "set") + box(160, 18, 90, 22, '"Ada" → 72', { mono: true, fs: 11, stroke: "var(--gold)" }) + box(160, 46, 90, 22, '"Mia" → 81', { mono: true, fs: 11, stroke: "var(--gold)" }) + box(160, 74, 90, 22, '"Leo" → 58', { mono: true, fs: 11, stroke: "var(--gold)" }) + lab(205, 112, "dict: key → value"), "Sets hold unique items, dictionaries map keys to values"),
-    "8": wrap(`<line x1="24" y1="100" x2="250" y2="100" stroke="var(--muted)"/><line x1="24" y1="10" x2="24" y2="100" stroke="var(--muted)"/>` + [42, 38, 45, 50, 61, 88, 70].map((v, i) => `<rect x="${34 + i * 31}" y="${100 - v}" width="20" height="${v}" rx="2" fill="${i === 5 ? "var(--gold)" : "var(--blue)"}"/>`).join("") + lab(137, 116, "plt.bar(days, cups)", { mono: true }), "A bar chart turns a list of numbers into a picture"),
-    "9": wrap(`<rect x="10" y="26" width="76" height="70" rx="8" fill="none" stroke="var(--ink)" stroke-width="2" stroke-dasharray="5 4"/>` + lab(48, 50, "class", { c: "var(--ink)" }) + lab(48, 68, "Robot", { c: "var(--ink)", mono: true }) + lab(48, 112, "blueprint") + [0, 1, 2].map(i => arr(88, 60, 140, 22 + i * 38) + box(142, 8 + i * 38, 110, 28, ['robot1 · "Bender"', 'robot2 · "Santa"', 'robot3 · "Devil"'][i], { mono: true, fs: 10, stroke: "var(--teal)" })).join(""), "One class is a blueprint for many objects"),
-    "10": wrap(box(80, 8, 100, 30, "Inhabitant", { bold: true, stroke: "var(--ink)" }) + [0, 1, 2].map(i => `<line x1="${50 + i * 80}" y1="80" x2="130" y2="40" stroke="var(--muted)" stroke-width="2"/>` + box(14 + i * 80, 80, 72, 28, ["Human", "Robot", "Alien"][i], { stroke: "var(--blue)" })).join("") + `<polygon points="130,38 124,50 136,50" fill="var(--muted)"/>` + lab(130, 62, "is a", { fs: 10 }), "Human, Robot and Alien inherit from Inhabitant"),
-    "11": wrap(`<rect x="10" y="14" width="100" height="90" rx="6" fill="var(--surface)" stroke="var(--line)"/>` + [0, 1, 2, 3, 4].map(i => `<line x1="10" x2="110" y1="${32 + i * 18}" y2="${32 + i * 18}" stroke="var(--line)"/>`).join("") + lab(60, 27, "titanic.csv", { mono: true, fs: 10 }) + arr(114, 60, 142, 60) + [["1st", 63], ["2nd", 47], ["3rd", 24]].map(([k, v], i) => `<rect x="${152 + i * 34}" y="${100 - v}" width="24" height="${v}" fill="var(--blue)"/>` + lab(164 + i * 34, 114, k)).join("") + lab(200, 18, "% survived", { c: "var(--ink)" }), "Raw data becomes an answer: survival rate by class"),
-    "12": wrap(["Plan", "Build", "Test", "Explain"].map((t, i) => box(6 + i * 64, 42, 56, 34, t, { stroke: ["var(--muted)", "var(--blue)", "var(--teal)", "var(--gold)"][i], bold: true }) + (i < 3 ? arr(62 + i * 64, 59, 70 + i * 64, 59) : "")).join("") + lab(130, 100, "commit after every step"), "Plan, build, test, explain, and commit as you go")
+    "1": { svg: wrap(260, N(30, 30, 1, "The user types") + B(20, 60, 150, 70, ['"Ada" ⏎'], { m: true, fs: 18 }) + A([[172, 95], [228, 95]]) + T(200, 84, "input()", { m: true, fs: 13, c: "var(--muted)" }) +
+        N(250, 30, 2, "Python stores it") + varBox(240, 60, 170, "name", '"Ada"', "str") + A([[412, 95], [468, 95]]) + T(440, 84, "print", { m: true, fs: 13, c: "var(--muted)" }) +
+        N(490, 30, 3, "print() shows it") + term(480, 60, 220, 70, ["", "Hello, Ada!"], 17) +
+        term(20, 165, 680, 56, ['name = input("Name? ")', 'print(f"Hello, {name}!")']) + T(360, 250, "input() ALWAYS gives text (str). Use int() or float() before doing maths.", { fs: 13, c: "var(--muted)" }), "Keyboard to variable to screen"),
+      cap: ["The user types something and presses Enter.", "input() hands it back as text, and = stores it in a labelled box called a variable.", "print() reads the box and shows it. The f-string puts the value where {name} is."] },
+    "2": { svg: wrap(260, B(20, 100, 130, 56, ["age = 20"], { m: true, fs: 16 }) + A([[152, 128], [200, 128]]) +
+        D(290, 128, 180, 110, "age >= 18 ?", { fill: "var(--hl)" }) +
+        A([[380, 128], [420, 128], [420, 65], [462, 65]], { c: "var(--gold)", k: "g", w: 4 }) + T(398, 116, "True", { b: true, c: "var(--gold-ink)" }) +
+        B(465, 38, 200, 54, ['print("Come in")'], { m: true, s: "var(--good)", fill: "var(--hl)", sw: 3 }) +
+        A([[290, 183], [290, 215], [462, 215]]) + T(312, 205, "False", { b: true, c: "var(--muted)", a: "start" }) +
+        B(465, 188, 200, 54, ['print("Sorry")'], { m: true, s: "var(--bad)" }) + T(565, 135, "Only ONE path runs", { fs: 13, c: "var(--muted)" }) + T(565, 153, "(the gold one, because 20 >= 18)", { fs: 12, c: "var(--muted)" }), "A decision with age 20 takes the True path"),
+      cap: ["Start with a value: age is 20.", "The diamond asks a True/False question. 20 >= 18 is True.", "Python follows the True arrow and skips the other branch completely. With age = 15, it would follow False instead."] },
+    "3": { svg: wrap(260, B(20, 105, 120, 46, ["apple = 0"], { m: true }) + A([[142, 128], [168, 128]]) +
+        D(255, 128, 170, 100, "apple < 3 ?") +
+        A([[340, 128], [378, 128]], { c: "var(--good)", k: "ok" }) + T(357, 118, "True", { fs: 12, b: true, c: "var(--good)" }) +
+        B(380, 100, 180, 58, ["Removed apple.", "apple = apple + 1"], { m: true, fs: 13 }) +
+        A([[470, 100], [470, 45], [255, 45], [255, 76]], { c: "var(--blue)", k: "b", w: 3 }) + T(362, 37, "go back up and check again", { fs: 13, c: "var(--blue)", b: true }) +
+        A([[255, 178], [255, 222], [378, 222]]) + T(270, 205, "False", { fs: 12, b: true, c: "var(--muted)", a: "start" }) + B(380, 200, 180, 44, ["All apples removed"], { fs: 13 }) +
+        T(640, 40, "Trace", { b: true }) + ["apple", "check"].map((h, i) => T(600 + i * 75, 65, h, { m: true, fs: 12, c: "var(--muted)" })).join("") +
+        [[0, "0<3 ✓"], [1, "1<3 ✓"], [2, "2<3 ✓"], [3, "3<3 ✗"]].map(([a, c], i) => `<rect x="575" y="${75 + i * 34}" width="135" height="28" rx="6" fill="${i === 3 ? "var(--sunk)" : "var(--hl)"}"/>` + T(600, 94 + i * 34, a, { m: true, b: true }) + T(675, 94 + i * 34, c, { m: true, fs: 13, c: i === 3 ? "var(--bad)" : "var(--good)" })).join(""), "A while loop checks, runs the body, and goes back until the check is False"),
+      cap: ["Set a counter, apple = 0.", "Check the condition. While it's True, run the body, add 1, and go back up (blue arrow).", "The trace shows each pass. On the 4th check 3 < 3 is False, so the loop ends."] },
+    "4": { svg: wrap(260, N(30, 30, 1, "Call it with arguments") + B(20, 92, 200, 56, ["sum_weights(12, 6)"], { m: true, fs: 15 }) + A([[222, 120], [258, 120]]) +
+        N(275, 30, 2, "Parameters get the values") + `<rect x="260" y="55" width="270" height="140" rx="14" fill="var(--sunk)" stroke="var(--ink)" stroke-width="2.5"/>` + T(395, 80, "def sum_weights(person, inventory):", { m: true, fs: 12, b: true }) +
+        varBox(275, 98, 115, "person", "12", "") + varBox(400, 98, 115, "inventory", "6", "") + T(395, 186, "return person + inventory", { m: true, fs: 13 }) +
+        A([[532, 125], [585, 125]], { c: "var(--gold)", k: "g", w: 4 }) + T(558, 106, "return", { m: true, fs: 12, c: "var(--gold-ink)" }) +
+        N(575, 30, 3, "It comes back") + B(588, 95, 112, 60, ["18"], { fs: 28, b: true, s: "var(--gold)", fill: "var(--hl)" }) +
+        term(20, 210, 680, 40, ["total = sum_weights(12, 6)    # total is now 18"], 14), "A function call sends arguments in and gets a return value back"),
+      cap: ["You call the function and pass in arguments, 12 and 6.", "Inside, the parameters person and inventory receive those values.", "return sends the answer back, and the call is replaced by 18."] },
+    "5": { svg: wrap(250, T(20, 32, 'steps = ["Forward", "Back", "Left", "Right"]', { m: true, a: "start", fs: 15 }) +
+        ["Forward", "Back", "Left", "Right"].map((v, i) => B(110 + i * 122, 60, 112, 56, [`"${v}"`], { m: true, fs: 14, fill: i === 1 || i === 2 ? "var(--hl)" : "var(--surface)", s: i === 1 || i === 2 ? "var(--gold)" : "var(--blue)" }) + T(166 + i * 122, 140, `[${i}]`, { m: true, b: true, c: "var(--blue)" }) + T(166 + i * 122, 162, `[${i - 4}]`, { m: true, fs: 13, c: "var(--muted)" })).join("") +
+        T(98, 145, "index", { a: "end", fs: 13, c: "var(--muted)" }) + T(98, 167, "from end", { a: "end", fs: 13, c: "var(--muted)" }) +
+        B(610, 60, 95, 56, ['"Up"'], { m: true, dash: true, s: "var(--teal)" }) + T(657, 140, ".append()", { m: true, fs: 12, c: "var(--teal)" }) +
+        `<path d="M232,182 v10 h234 v-10" fill="none" stroke="var(--gold)" stroke-width="2.5"/>` + T(349, 215, 'steps[1:3]  →  ["Back", "Left"]', { m: true, fs: 14, b: true }) + T(349, 236, "starts at index 1, stops BEFORE index 3", { fs: 12, c: "var(--muted)" }), "A list of four items with positive and negative indexes, a slice, and append"),
+      cap: ["Each item sits in a numbered slot. Counting starts at 0, so 'Forward' is steps[0].", "Negative numbers count from the end: steps[-1] is 'Right'.", "A slice [1:3] takes slots 1 and 2. append() adds a new slot at the end."] },
+    "6": { svg: wrap(260, `<path d="M20,30 h100 l24,24 v176 h-124z" fill="var(--surface)" stroke="var(--blue)" stroke-width="2.5"/>` + T(82, 248, "sales.txt", { m: true, fs: 13, c: "var(--muted)" }) +
+        ["10.25", "50.3", "20.25", "2.4", "250.6"].map((v, i) => (i === 1 ? `<rect x="28" y="${64 + i * 30}" width="108" height="26" rx="4" fill="var(--hl)"/>` : "") + T(82, 82 + i * 30, v, { m: true, b: i === 1 })).join("") +
+        A([[148, 125], [212, 125]], { c: "var(--gold)", k: "g", w: 3 }) + T(180, 106, "next line", { fs: 12, c: "var(--gold-ink)" }) +
+        varBox(215, 90, 160, "line", '"50.3\\n"', "str", true) + A([[377, 125], [433, 125]]) + T(405, 106, "float()", { m: true, fs: 12, c: "var(--muted)" }) +
+        varBox(435, 90, 150, "total", "60.55", "float") + T(510, 185, "10.25 + 50.3", { m: true, fs: 12, c: "var(--muted)" }) +
+        `<path d="M585,125 h40 v-80 h-330 v28" fill="none" stroke="var(--blue)" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#fg-b)"/>` + T(420, 36, "for line in file:  repeats for every line", { fs: 13, c: "var(--blue)", b: true }) +
+        term(215, 205, 485, 40, ["After the last line:  Total sales: £333.80"], 14), "Reading a file line by line and adding each value to a running total"),
+      cap: ["open() connects to the file. The for loop hands you one line at a time (highlighted).", "Each line arrives as text with \\n on the end, so float() turns it into a number.", "That number is added to total, and the loop goes back for the next line (blue arrow) until the file ends."] },
+    "R": { svg: wrap(250, T(20, 28, "How confident am I? (1–5)", { a: "start", b: true }) +
+        [["Output / input", 5], ["Decisions", 4], ["Loops", 3], ["Functions", 4], ["Lists / tuples", 2], ["Files", 3]].map(([t, v], i) => T(160, 62 + i * 31, t, { a: "end", fs: 14 }) + `<rect x="172" y="${48 + i * 31}" width="320" height="20" rx="10" fill="var(--sunk)"/><rect x="172" y="${48 + i * 31}" width="${v * 64}" height="20" rx="10" fill="${v <= 2 ? "var(--gold)" : "var(--teal)"}"/>` + T(505, 63 + i * 31, v, { a: "start", m: true, b: true })).join("") +
+        A([[640, 186], [540, 186]], { c: "var(--gold)", k: "g", w: 4 }) + T(645, 180, "Start", { a: "start", b: true, c: "var(--gold-ink)" }) + T(645, 198, "here", { a: "start", b: true, c: "var(--gold-ink)" }) +
+        T(560, 62, "Then:", { a: "start", b: true }) + ["1  redo its tasks", "2  take its quiz", "3  try an AE1 question"].map((t, i) => T(560, 86 + i * 22, t, { a: "start", fs: 13 })).join(""), "Confidence bars with the lowest topic marked as the place to start"),
+      cap: ["Rate each topic honestly using the slider in the playground.", "The shortest bar is your best use of reading week.", "Open that week, redo its tasks and quiz, then try an AE1-style question."] },
+    "7": { svg: wrap(260, T(170, 28, "SET: unique items, no order", { b: true }) +
+        `<circle cx="125" cy="130" r="88" fill="none" stroke="var(--blue)" stroke-width="2.5"/><circle cx="220" cy="130" r="88" fill="none" stroke="var(--teal)" stroke-width="2.5"/><path d="M172.5,57 A88,88 0 0,1 172.5,203 A88,88 0 0,1 172.5,57z" fill="var(--hl)"/>` +
+        T(52, 52, "football", { b: true, c: "var(--blue)", fs: 13 }) + T(292, 52, "chess", { b: true, c: "var(--teal)", fs: 13 }) +
+        [["Tunde", 85, 115], ["Sam", 85, 150], ["Ada", 172, 115], ["Mia", 172, 150], ["Leo", 262, 132]].map(([n, x, y]) => T(x, y, n, { fs: 15, b: n === "Ada" || n === "Mia" })).join("") +
+        T(172, 245, "football & chess  →  {'Ada', 'Mia'}", { m: true, fs: 13, b: true }) +
+        `<line x1="350" y1="20" x2="350" y2="245" stroke="var(--line)" stroke-width="2"/>` + T(540, 28, "DICTIONARY: key → value", { b: true }) +
+        [["Ada", 72], ["Mia", 81], ["Leo", 58]].map(([k, v], i) => B(395, 50 + i * 52, 120, 40, [`"${k}"`], { m: true, s: i === 1 ? "var(--gold)" : "var(--blue)", fill: i === 1 ? "var(--hl)" : "var(--surface)" }) + A([[517, 70 + i * 52], [572, 70 + i * 52]], i === 1 ? { c: "var(--gold)", k: "g", w: 3.5 } : {}) + B(575, 50 + i * 52, 90, 40, [String(v)], { m: true, s: i === 1 ? "var(--gold)" : "var(--teal)", fill: i === 1 ? "var(--hl)" : "var(--surface)" })).join("") +
+        T(530, 245, 'grades["Mia"]  →  81', { m: true, fs: 14, b: true }), "A Venn diagram of two sets and a dictionary lookup"),
+      cap: ["A set keeps each item once. & gives the items in both sets (the shaded overlap).", "A dictionary pairs each key with a value, like a contacts list pairs a name with a number.", "You look up by key, not by position: grades[\"Mia\"] goes straight to 81."] },
+    "8": { svg: wrap(260, term(20, 40, 250, 120, ["cups = [42, 38, 45,", "        50, 61, 88, 70]", "", "plt.bar(days, cups)", "plt.show()"], 14) +
+        A([[272, 100], [318, 100]], { c: "var(--gold)", k: "g", w: 3 }) + T(296, 180, "each number", { fs: 12, c: "var(--muted)" }) + T(296, 196, "= one bar", { fs: 12, c: "var(--muted)" }) +
+        `<line x1="340" y1="215" x2="705" y2="215" stroke="var(--ink)" stroke-width="1.5"/><line x1="340" y1="25" x2="340" y2="215" stroke="var(--ink)" stroke-width="1.5"/>` +
+        [42, 38, 45, 50, 61, 88, 70].map((v, i) => `<rect x="${356 + i * 50}" y="${215 - v * 2}" width="34" height="${v * 2}" rx="2" fill="${i === 5 ? "var(--gold)" : "var(--blue)"}"/>` + T(373 + i * 50, 233, ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"][i], { fs: 12, c: "var(--muted)" })).join("") +
+        T(623, 30, "88", { b: true, c: "var(--gold-ink)" }) + T(520, 252, "Coffees sold this week: Saturday stands out straight away", { fs: 12, c: "var(--muted)" }), "A list of numbers turned into a bar chart"),
+      cap: ["Start with plain Python lists: the labels (days) and the numbers (cups).", "plt.bar draws one bar per number, so its height is the value.", "plt.show() opens the window. The pattern (Saturday peak) jumps out in a way a list of numbers doesn't."] },
+    "9": { svg: wrap(260, `<rect x="20" y="30" width="200" height="190" rx="14" fill="none" stroke="var(--ink)" stroke-width="2.5" stroke-dasharray="8 6"/>` + T(120, 60, "class Robot", { m: true, b: true, fs: 16 }) +
+        ["name", "age", "energy", "display()", "move(distance)"].map((t, i) => T(120, 92 + i * 24, t, { m: true, fs: 14, c: i < 3 ? "var(--ink)" : "var(--blue)" })).join("") + T(120, 245, "blueprint: written once", { fs: 13, c: "var(--muted)" }) +
+        [["robot1", "Bender", 100], ["robot2", "Santa", 60], ["robot3", "Devil", 20]].map(([v, n, e], i) => A([[222, 125], [292, 52 + i * 72]], { c: "var(--teal)" }) + `<rect x="295" y="${25 + i * 72}" width="220" height="58" rx="10" fill="var(--surface)" stroke="var(--teal)" stroke-width="2.5"/>` + T(310, 47 + i * 72, `${v}`, { m: true, b: true, a: "start" }) + T(400, 47 + i * 72, `"${n}"`, { m: true, a: "start", fs: 13 }) + `<rect x="310" y="${57 + i * 72}" width="190" height="10" rx="5" fill="var(--sunk)"/><rect x="310" y="${57 + i * 72}" width="${e * 1.9}" height="10" rx="5" fill="${e < 30 ? "var(--bad)" : "var(--teal)"}"/>`).join("") +
+        T(535, 52, "Each object has", { a: "start", fs: 13, b: true }) + T(535, 70, "its OWN data.", { a: "start", fs: 13, b: true }) + T(535, 112, "They all SHARE", { a: "start", fs: 13, b: true }) + T(535, 130, "the same methods.", { a: "start", fs: 13 }) + T(535, 172, "robot3.move(20)", { a: "start", fs: 12, m: true }) + T(535, 190, "only changes robot3.", { a: "start", fs: 13 }), "One class blueprint creating three robot objects with different data"),
+      cap: ["The class (dashed) is the blueprint. It lists the attributes and methods every robot will have.", "Each Robot(\"…\") call builds a separate object with its own values, like the different energy bars.", "Methods act on one object: self means whichever object you called it on."] },
+    "10": { svg: wrap(270, `<rect x="210" y="15" width="300" height="88" rx="12" fill="var(--surface)" stroke="var(--ink)" stroke-width="2.5" stroke-dasharray="8 5"/>` + T(360, 42, "Inhabitant (abstract)", { b: true, i: true, fs: 15 }) + T(360, 66, "name · age · energy", { m: true, fs: 13 }) + T(360, 88, "eat() · grow() · move()", { m: true, fs: 13, c: "var(--blue)" }) +
+        [["Human", "display()"], ["Robot", "display() · the_laws()"], ["Alien", "display() · tech"]].map(([n, m], i) => `<line x1="${125 + i * 235}" y1="170" x2="360" y2="118" stroke="var(--muted)" stroke-width="2"/>` + B(30 + i * 235, 170, 190, 64, [`${n}(Inhabitant)`, m], { m: true, fs: 13, b: true })).join("") +
+        `<polygon points="360,104 351,120 369,120" fill="var(--surface)" stroke="var(--muted)" stroke-width="2"/>` + `<rect x="175" y="136" width="370" height="22" rx="6" fill="var(--surface)"/>` + T(360, 152, "each child INHERITS everything above, then adds its own", { fs: 13, c: "var(--muted)" }) +
+        T(360, 262, "Inhabitant() → TypeError (abstract). Make a Human, Robot or Alien instead.", { fs: 13, c: "var(--bad)" }), "Human, Robot and Alien inherit from the abstract Inhabitant class"),
+      cap: ["Shared code lives once, in the parent: name, age, energy, eat, grow and move.", "Each child is a special kind of Inhabitant (the hollow arrow means 'is a') and only adds what's different.", "The parent is abstract (dashed), so you can only create the children."] },
+    "11": { svg: wrap(260, `<rect x="20" y="40" width="250" height="160" rx="10" fill="var(--code-bg)"/>` + T(145, 30, "titanic.csv (891 rows)", { m: true, fs: 13, c: "var(--muted)" }) +
+        ["Id,Survived,Pclass,Name…", "1,0,3,Braund…", "2,1,1,Cumings…", "3,1,3,Heikkinen…", "4,1,1,Futrelle…", "…"].map((l, i) => `<text x="34" y="${66 + i * 24}" font-size="12.5" fill="${i === 0 ? "var(--code-kw)" : "var(--code-fg)"}" ${M}>${l}</text>`).join("") +
+        A([[272, 120], [318, 120]], { c: "var(--gold)", k: "g", w: 3 }) + B(320, 70, 165, 100, ["for record in records:", "  count survivors", "  per class"], { m: true, fs: 12, s: "var(--gold)", lh: 22 }) + A([[487, 120], [528, 120]], { c: "var(--gold)", k: "g", w: 3 }) +
+        `<line x1="540" y1="210" x2="705" y2="210" stroke="var(--ink)" stroke-width="1.5"/>` + [["1st", 63], ["2nd", 47], ["3rd", 24]].map(([k, v], i) => `<rect x="${552 + i * 52}" y="${210 - v * 2.4}" width="38" height="${v * 2.4}" rx="2" fill="var(--blue)"/>` + T(571 + i * 52, 204 - v * 2.4, v + "%", { fs: 13, b: true }) + T(571 + i * 52, 228, k, { fs: 13 })).join("") +
+        T(622, 30, "% survived by class", { fs: 13, b: true }) + T(360, 252, "891 rows of raw data become one clear answer: class made a huge difference.", { fs: 13, c: "var(--muted)" }), "Raw CSV rows processed by a loop into a survival-by-class bar chart"),
+      cap: ["Every row is one passenger. csv.reader turns each into a list, so record[1] is Survived and record[2] is Pclass.", "A loop with counters (weeks 3–6) adds up survivors in each class.", "The chart shows the answer: 63% of 1st class survived but only 24% of 3rd."] },
+    "12": { svg: wrap(240, [["Plan", "read the brief", "steps in English", "var(--muted)"], ["Build", "small functions", "one at a time", "var(--blue)"], ["Test", "normal, edge and", "wrong inputs", "var(--teal)"], ["Explain", "comments say why", "tidy, readable", "var(--gold)"]].map(([t, a, b, c], i) => `<rect x="${20 + i * 175}" y="40" width="150" height="120" rx="12" fill="var(--surface)" stroke="${c}" stroke-width="3"/>` + N(42 + i * 175, 62, i + 1) + T(95 + i * 175, 98, t, { b: true, fs: 18 }) + T(95 + i * 175, 124, a, { fs: 13 }) + T(95 + i * 175, 143, b, { fs: 13 }) + (i < 3 ? A([[172 + i * 175, 100], [193 + i * 175, 100]]) + T(182 + i * 175, 185, "git commit", { m: true, fs: 11, c: "var(--teal)" }) + T(182 + i * 175, 172, "✓", { c: "var(--teal)", b: true }) : "")).join("") +
+        T(360, 222, "Commit after every step so you can always go back to a version that worked.", { fs: 13, c: "var(--muted)" }), "Plan, build, test, explain, with a commit between each step"),
+      cap: ["Plan before typing: list what the brief asks for, in plain English.", "Build one small function at a time and test it straight away with normal, edge and wrong inputs.", "Explain with comments that say why, and commit after each step."] }
   };
 })();
 
@@ -1242,7 +1592,7 @@ VIZ.dict = el => {
     <div style="overflow-x:auto"><svg viewBox="0 0 440 210" style="width:100%;max-width:520px;min-width:340px;height:auto" id="st-svg" role="img" aria-label="Venn diagram of the football and chess clubs"></svg></div>
     <div class="console" id="st-out" aria-live="polite"></div>
     <h3>Dictionary lookup</h3>
-    <div class="row"><label class="f" style="flex:1 1 160px">key <input class="in" id="dc-key" value="Mia"></label><div class="seg" id="dc-mode"><button type="button" data-v="br" aria-pressed="true">grades[key]</button><button type="button" data-v="get" aria-pressed="false">grades.get(key, "none")</button></div></div>
+    <div class="row"><label class="f" style="flex:1 1 160px">key <input class="in" id="dc-key" value="Mia"></label><div class="seg" id="dc-mode"><button type="button" data-v="br" aria-pressed="true">grades[key]</button><button type="button" data-v="get" aria-pressed="false">check with in first</button></div></div>
     <div class="cells" id="dc-cells"></div>
     <div class="console" id="dc-out" aria-live="polite"></div>
     <details class="predict"><summary>Show it as JSON</summary><pre class="code"><span class="ln">${esc(JSON.stringify(grades, null, 4)).split("\n").join('</span><span class="ln">')}</span></pre></details>`;
@@ -1266,7 +1616,7 @@ VIZ.dict = el => {
     const found = key in grades;
     $("#dc-out").innerHTML = mode === "br"
       ? `print(grades["${esc(key)}"])\n` + (found ? grades[key] : `<span class="err">KeyError: '${esc(key)}'</span>`)
-      : `print(grades.get("${esc(key)}", "none"))\n` + (found ? grades[key] : "none");
+      : `if "${esc(key)}" in grades:\n    print(grades["${esc(key)}"])\nelse:\n    print("No grade for ${esc(key)}")\n\n` + (found ? grades[key] : `No grade for ${esc(key)}`);
     el.querySelectorAll("#dc-mode button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === mode));
   };
   $("#st-op").addEventListener("click", e => { if (e.target.dataset.v) { op = e.target.dataset.v; drawSet(); } });
@@ -1837,8 +2187,8 @@ VIZ.json = el => {
 let done = store.get("spl-done", {});
 let taskState = store.get("spl-tasks", {});
 
-const classPos = WEEKS.findIndex(w => w.id === CLASS_WEEK);
 function renderRoute(cur) {
+  const classPos = WEEKS.findIndex(w => w.id === classWeek);
   document.getElementById("route").innerHTML = WEEKS.map((w, i) => { const status = i < classPos ? "covered in class" : i === classPos ? "this Saturday" : "coming up"; return `<li class="stop${w.half2 ? " half2" : ""}${w.reading ? " reading" : ""}${done[w.id] ? " done" : ""}${i > classPos ? " later" : ""}${i === classPos ? " now" : ""}">
     <button type="button" data-w="${w.id}" aria-current="${w.id === cur}" aria-label="${w.reading ? "Reading week" : "Week " + w.id}: ${esc(w.title)}, ${status}${done[w.id] ? ", you've completed it" : ""}">${w.reading ? "RW" : w.id}</button><span>${esc(w.short)}</span>${i === classPos ? `<em class="flag">This Saturday</em>` : i < classPos ? `<em class="flag past">covered</em>` : ""}</li>`; }).join("");
   const n = Object.values(done).filter(Boolean).length, C = 2 * Math.PI * 22;
@@ -1858,17 +2208,21 @@ function renderWeek(id) {
   </section>
   <div class="grid">
     <div class="col">
-      <div class="idea"><div><span class="eyebrow">The big idea</span><p>${w.idea}</p></div><div class="life"><span class="eyebrow">In real life</span><p>${w.life}</p></div>${FIG[w.id] ? `<figure class="fig"><span class="eyebrow">At a glance</span>${FIG[w.id]}</figure>` : ""}</div>
+      <div class="idea"><div><span class="eyebrow">The big idea</span><p>${w.idea}</p></div><div class="life"><span class="eyebrow">In real life</span><p>${w.life}</p></div></div>
+      ${FIG[w.id] ? `<figure class="panel see" aria-labelledby="see-h"><header><h3 id="see-h">See it</h3><span class="note">Follow the numbers</span></header><div class="see-svg">${FIG[w.id].svg}</div><figcaption><ol class="see-cap">${FIG[w.id].cap.map(c => `<li>${esc(c)}</li>`).join("")}</ol></figcaption></figure>` : ""}
       ${w.lessons ? `<section class="panel" aria-labelledby="ls-h"><header><h3 id="ls-h">Lesson pages</h3><span class="note">${w.lessons.length} topics · tick off each activity as you commit it</span></header>
         <div class="seg" role="tablist" id="ls-tabs" style="flex-wrap:wrap;border-radius:14px">${w.lessons.map((l, i) => `<button type="button" role="tab" data-l="${i}" aria-selected="${i === 0}" aria-pressed="${i === 0}">${esc(l.name)}</button>`).join("")}</div>
         <div id="ls-body" role="tabpanel" style="display:grid;gap:12px;min-width:0"></div></section>` : ""}
       <section class="panel" aria-labelledby="pg-h"><header><h3 id="pg-h">Playground</h3><span class="note">Click, type, and watch the code respond</span></header>
         ${Array.isArray(w.viz) ? `<div class="seg" id="vz-tabs" style="flex-wrap:wrap;border-radius:14px">${w.viz.map((v, i) => `<button type="button" data-v="${v}" aria-pressed="${i === 0}">${VIZ_NAMES[v] || v}</button>`).join("")}</div>` : ""}
         <div id="viz" style="display:grid;gap:14px;min-width:0"></div></section>
-      <section class="panel" aria-labelledby="cd-h"><header><h3 id="cd-h">The code we write in class</h3></header>${codeHTML(w.code)}<p class="note">${w.codeNote}</p></section>
+      <section class="panel" aria-labelledby="cd-h"><header><h3 id="cd-h">The code we write in class</h3><button type="button" class="btn" id="cd-toggle" aria-pressed="true">Hide explanations</button></header><div id="cd-body"></div><p class="note">${w.codeNote}</p></section>
+      <section class="panel" aria-labelledby="rn-h" id="runner"></section>
       <section class="panel" aria-labelledby="pr-h"><header><h3 id="pr-h">Predict the output</h3><span class="note">Decide first, then check</span></header>${codeHTML(w.predict.code)}
         <details class="predict"><summary>Show the answer</summary><div class="console">${esc(w.predict.answer)}</div></details></section>
       <section class="panel" aria-labelledby="qz-h" id="quiz"></section>
+      <section class="panel" aria-labelledby="ps-h" id="parsons"></section>
+      <section class="panel" aria-labelledby="er-h" id="errs"></section>
     </div>
     <aside class="col side">
       <section class="panel" aria-labelledby="pl-h"><h3 id="pl-h">This Saturday, 2 hours</h3>
@@ -1876,6 +2230,8 @@ function renderWeek(id) {
         <ul class="plan-list">${planRows.map(r => `<li><i style="background:${r.color}"></i><span class="tm">${fmt(r.start)}</span><span>${esc(r.label)} <span class="note">· ${r.min} min</span></span></li>`).join("")}</ul></section>
       <section class="panel" aria-labelledby="tk-h"><h3 id="tk-h">Your tasks</h3>
         <ul class="tasks">${w.tasks.map((tk, i) => { const k = w.id + "-" + i; return `<li><label for="tk-${k}"><input type="checkbox" id="tk-${k}" data-k="${k}" ${taskState[k] ? "checked" : ""}><span><span class="lvl">${tk[0]}</span>${esc(tk[1])}</span></label></li>`; }).join("")}</ul></section>
+      <section class="panel" aria-labelledby="ch-h" id="cheat"></section>
+      <section class="panel" aria-labelledby="st-h" id="stuck"></section>
       <section class="panel" aria-labelledby="so-h"><h3 id="so-h">On SOL this week</h3>
         <ul class="sol">${w.sol.map((s, i) => `<li data-n="${i + 1}">${esc(s)}</li>`).join("")}</ul>
         ${READING[w.id] ? `<div class="eyebrow" style="margin-top:4px">In the course PDFs</div><ul class="sol">${READING[w.id].map(r => `<li data-n="›">${esc(r)}</li>`).join("")}</ul>` : ""}</section>
@@ -1894,13 +2250,17 @@ function renderWeek(id) {
         ${l.points ? `<div style="display:grid;gap:10px">${l.points.map(p => `<div style="display:grid;gap:4px;min-width:0"><b style="font-size:.9rem">${esc(p[0])}</b>${para(p[1])}</div>`).join("")}</div>` : ""}
         ${l.fix ? `<p class="note" style="border-left:3px solid var(--gold);padding-left:10px"><b>Note:</b> ${esc(l.fix)}</p>` : ""}
         <div class="eyebrow">Activities</div>
-        <ul class="tasks">${l.acts.map((a, j) => { const k = `${w.id}-L${i}-${j}`; return `<li><label for="tk-${k}"><input type="checkbox" id="tk-${k}" data-k="${k}" ${taskState[k] ? "checked" : ""}><span><span class="lvl">${j + 1} · ${esc(a[0])}</span>${esc(a[1])} <span class="pill">then commit</span></span></label></li>`; }).join("")}</ul>`;
+        <ul class="tasks">${l.acts.map((a, j) => { const k = `${w.id}-L${i}-${j}`; return `<li><label for="tk-${k}"><input type="checkbox" id="tk-${k}" data-k="${k}" ${taskState[k] ? "checked" : ""}><span><span class="lvl">${j + 1} · ${esc(a[0])}</span>${esc(a[1])} <span class="pill">then commit</span></span></label>${HINTS[w.id]?.[a[0]] ? `<div class="hint" data-hk="${esc(a[0])}" data-n="0"><button type="button" class="btn hint-btn">Need a hint? (1 of 3)</button><div class="hint-body"></div></div>` : ""}</li>`; }).join("")}</ul>`;
       document.querySelectorAll("#ls-tabs button").forEach(b => { const on = +b.dataset.l === i; b.setAttribute("aria-selected", on); b.setAttribute("aria-pressed", on); });
     };
+    document.getElementById("ls-body").onclick = e => { const b = e.target.closest(".hint-btn"); if (!b) return; const box = b.parentElement, H = HINTS[w.id][box.dataset.hk], n = +box.dataset.n; if (n >= H.length) return; const lab = ["Hint 1", "Hint 2", "Key line"][n]; box.querySelector(".hint-body").insertAdjacentHTML("beforeend", n === 2 ? `<div><b>${lab}:</b>${codeHTML(H[n])}</div>` : `<p><b>${lab}:</b> ${esc(H[n])}</p>`); box.dataset.n = n + 1; if (n + 1 >= H.length) b.remove(); else b.textContent = n + 1 === 1 ? "Another hint (2 of 3)" : "Show the key line (3 of 3)"; };
     document.getElementById("ls-tabs").addEventListener("click", e => { const b = e.target.closest("button[data-l]"); if (b) showLesson(+b.dataset.l); });
     showLesson(0);
   }
   renderQuiz(w);
+  renderExtras(w);
+  renderCodeExplained(w);
+  document.getElementById("cd-toggle").onclick = () => { store.set("spl-explain", !store.get("spl-explain", true)); renderCodeExplained(w); };
   renderRoute(w.id);
 }
 
@@ -1908,11 +2268,12 @@ function renderQuiz(w) {
   const el = document.getElementById("quiz");
   const mixed = w.id === "R" || w.id === "12";
   const pool = mixed ? Object.entries(QUIZ).filter(([k]) => w.id === "12" || +k <= 6).flatMap(([k, qs]) => qs.map(q => [...q, k])) : QUIZ[w.id].map(q => [...q, w.id]);
-  const pick = mixed ? pool.map(q => [Math.random(), q]).sort((a, b) => a[0] - b[0]).slice(0, w.id === "12" ? 10 : 8).map(x => x[1]) : pool;
+  const wi = WEEKS.findIndex(x => x.id === w.id), back = WEEKS.slice(Math.max(0, wi - 3), Math.max(0, wi - 1)).filter(x => QUIZ[x.id]).flatMap(x => QUIZ[x.id].map(q => [...q, x.id, true]));
+  const pick = mixed ? pool.map(q => [Math.random(), q]).sort((a, b) => a[0] - b[0]).slice(0, w.id === "12" ? 10 : 8).map(x => x[1]) : pool.concat(back.map(q => [Math.random(), q]).sort((a, b) => a[0] - b[0]).slice(0, 2).map(x => x[1]));
   const best = store.get("spl-quiz", {}), first = {};
   el.innerHTML = `<header><h3 id="qz-h">${mixed ? (w.id === "12" ? "Mixed test: all weeks" : "Revision test: weeks 1–6") : "Quick quiz"}</h3><span class="note" id="qz-best">${best[w.id] !== undefined ? `Your best: ${best[w.id]}/${pick.length}` : `${pick.length} questions · instant feedback`}</span></header>
     ${mixed ? `<p class="note">${pick.length} random questions${w.id === "12" ? " from every week, in the style of the AE1 quiz" : " from weeks 1–6"}. Press New questions for a different set.</p>` : ""}
-    <ol style="margin:0;padding-left:1.3em;display:grid;gap:18px">${pick.map((q, i) => `<li><fieldset style="border:0;margin:0;padding:0;display:grid;gap:8px;min-width:0"><legend style="font-weight:700;padding:0">${esc(q[0])}${mixed ? ` <span class="pill">week ${q[5] === "R" ? "RW" : q[5]}</span>` : ""}</legend>
+    <ol style="margin:0;padding-left:1.3em;display:grid;gap:18px">${pick.map((q, i) => `<li><fieldset style="border:0;margin:0;padding:0;display:grid;gap:8px;min-width:0"><legend style="font-weight:700;padding:0">${esc(q[0])}${mixed ? ` <span class="pill">week ${q[5] === "R" ? "RW" : q[5]}</span>` : q[6] ? ` <span class="pill">revision · week ${q[5]}</span>` : ""}</legend>
       ${q[1] ? codeHTML(q[1]) : ""}
       <div style="display:grid;gap:6px">${q[2].map((o, j) => `<label style="display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border:1.5px solid var(--line);border-radius:10px;cursor:pointer" id="qz-${i}-${j}-l"><input type="radio" name="qz-${i}" id="qz-${i}-${j}" data-q="${i}" data-o="${j}" style="margin-top:4px;accent-color:var(--blue)"><span style="font-family:${/[=()"\[\]{}]/.test(o) ? "var(--f-mono)" : "inherit"};font-size:.92rem">${esc(o)}</span></label>`).join("")}</div>
       <p class="note" id="qz-${i}-fb" aria-live="polite"></p></fieldset></li>`).join("")}</ol>
@@ -1927,19 +2288,223 @@ function renderQuiz(w) {
     if (n === pick.length) {
       const score = Object.values(first).filter(Boolean).length;
       document.getElementById("qz-score").textContent = `Score (first tries): ${score}/${pick.length}${score === pick.length ? ". Perfect!" : score >= pick.length * .6 ? ". Good. Re-read the explanations for the ones you missed." : ". Go back over the lesson pages and try again."}`;
-      if (best[w.id] === undefined || score > best[w.id]) { best[w.id] = score; store.set("spl-quiz", best); document.getElementById("qz-best").textContent = `Your best: ${score}/${pick.length}`; }
+      if (best[w.id] === undefined || score > best[w.id]) { best[w.id] = score; store.set("spl-quiz", best); Sync.push(); document.getElementById("qz-best").textContent = `Your best: ${score}/${pick.length}`; }
     } else document.getElementById("qz-score").textContent = `${n} of ${pick.length} answered`;
   };
   document.getElementById("qz-reset").addEventListener("click", () => renderQuiz(w));
 }
 
-function current() { const h = location.hash.replace("#week-", ""); return WEEKS.some(w => w.id === h) ? h : store.get("spl-last", CLASS_WEEK); }
+/* ---------- extras: errors, puzzles, runner, cheat sheet ---------- */
+function renderExtras(w) {
+  renderErrors(w); renderParsons(w); renderRunner(w); renderCheat(w); renderStuck(w);
+  if (document.documentElement.classList.contains("present")) Present.reset();
+}
+
+function renderErrors(w) {
+  const el = document.getElementById("errs"); if (!el) return;
+  const list = ERRS[w.id] || (w.id === "R" ? ["1", "2", "3", "4", "5", "6"] : Object.keys(ERRS)).map(k => ERRS[k][0]);
+  el.innerHTML = `<header><h3 id="er-h">When it goes wrong</h3><span class="note">Click an error to see what it means and how to fix it</span></header>
+    <div style="display:grid;gap:8px">${list.map(([msg, why, bad, good]) => `<details class="err-card"><summary><span class="err-msg">${esc(msg)}</span></summary>
+      <p>${esc(why)}</p><div class="err-pair"><div><span class="eyebrow" style="color:var(--bad)">Causes it</span>${codeHTML(bad)}</div><div><span class="eyebrow" style="color:var(--good)">Fixes it</span>${codeHTML(good)}</div></div></details>`).join("")}</div>
+    <p class="note">Read the <b>last line</b> of the red error first, then the line number above it. That's where Python got stuck.</p>`;
+}
+
+function renderParsons(w) {
+  const el = document.getElementById("parsons"); const P = PARSONS[w.id];
+  if (!el) return; if (!P) { el.hidden = true; return; } el.hidden = false;
+  let items = P.lines.map((l, i) => ({ i, text: l[0], ind: 0 }));
+  do { items.sort(() => Math.random() - .5); } while (items.length > 2 && items.every((it, k) => it.i === k));
+  const draw = (msg, ok) => {
+    el.innerHTML = `<header><h3 id="ps-h">Put the lines in order</h3><span class="note">${esc(P.t)}</span></header>
+      <p class="note">Move each line up or down, then indent it with → or ←. Indentation counts, just like in Python.</p>
+      <ol class="parsons" aria-label="Code lines, in your chosen order">${items.map((it, k) => `<li><div class="ps-btns"><button type="button" class="btn ps" data-a="up" data-k="${k}" aria-label="Move line up" ${k === 0 ? "disabled" : ""}>↑</button><button type="button" class="btn ps" data-a="down" data-k="${k}" aria-label="Move line down" ${k === items.length - 1 ? "disabled" : ""}>↓</button><button type="button" class="btn ps" data-a="out" data-k="${k}" aria-label="Indent less" ${it.ind === 0 ? "disabled" : ""}>←</button><button type="button" class="btn ps" data-a="in" data-k="${k}" aria-label="Indent more" ${it.ind >= 3 ? "disabled" : ""}>→</button></div><code class="ps-line" style="padding-left:${12 + it.ind * 28}px">${hl(it.text)}</code></li>`).join("")}</ol>
+      <div class="row"><button type="button" class="btn primary" data-a="check">Check my order</button><button type="button" class="btn" data-a="show">Show the answer</button><button type="button" class="btn" data-a="shuffle">Shuffle again</button></div>
+      <p class="note" aria-live="polite" style="font-weight:700;color:${ok === true ? "var(--good)" : ok === false ? "var(--bad)" : "var(--muted)"}">${msg || ""}</p>`;
+  };
+  el.onclick = e => {
+    const b = e.target.closest("button[data-a]"); if (!b) return; const a = b.dataset.a, k = +b.dataset.k;
+    if (a === "up" && k > 0) { [items[k - 1], items[k]] = [items[k], items[k - 1]]; draw(); el.querySelector(`[data-a="up"][data-k="${k - 1}"]`)?.focus(); return; }
+    if (a === "down" && k < items.length - 1) { [items[k + 1], items[k]] = [items[k], items[k + 1]]; draw(); el.querySelector(`[data-a="down"][data-k="${k + 1}"]`)?.focus(); return; }
+    if (a === "in") { items[k].ind = Math.min(3, items[k].ind + 1); draw(); el.querySelector(`[data-a="in"][data-k="${k}"]`)?.focus(); return; }
+    if (a === "out") { items[k].ind = Math.max(0, items[k].ind - 1); draw(); el.querySelector(`[data-a="out"][data-k="${k}"]`)?.focus(); return; }
+    if (a === "shuffle") { renderParsons(w); return; }
+    if (a === "show") { items = P.lines.map((l, i) => ({ i, text: l[0], ind: l[1] })); draw("This is the working order. Read it top to bottom and notice where each block starts and ends.", null); return; }
+    if (a === "check") {
+      const wrongPos = items.findIndex((it, n) => it.text !== P.lines[n][0]);
+      if (wrongPos >= 0) return draw(wrongPos === 0 ? "The first line isn't right yet. What has to happen before anything else?" : `Lines 1–${wrongPos} are in the right order. Line ${wrongPos + 1} is in the wrong place.`, false);
+      const wrongInd = items.findIndex((it, n) => it.ind !== P.lines[n][1]);
+      if (wrongInd >= 0) return draw(`The order is right! Now check the indentation of line ${wrongInd + 1}. Which block does it belong to?`, false);
+      draw("✓ Correct! Now type it into VS Code or PyCharm and run it.", true);
+    }
+  };
+  draw();
+}
+
+function renderCheat(w) {
+  const el = document.getElementById("cheat"); const C = CHEAT[w.id]; if (!el) return;
+  if (!C) { el.hidden = true; return; } el.hidden = false;
+  el.innerHTML = `<h3 id="ch-h">Cheat sheet</h3><span class="note">Screenshot this for revision</span>
+    <dl class="cheat">${C.map(([s, m]) => `<dt>${esc(s)}</dt><dd>${esc(m)}</dd>`).join("")}</dl>`;
+}
+
+/* ---------- run it yourself: Python Tutor link, or copy into an IDE ---------- */
+const RUN_INPUTS = { "1": "Ada\n19\n1.68\n62", "2": "soft\nyes", "3": "3", "4": "70\n1.8", "12": "5" };
+function renderRunner(w) {
+  const el = document.getElementById("runner"); if (!el) return;
+  const start = w.code;
+  el.innerHTML = `<header><h3 id="rn-h">Run it yourself</h3><span class="note">Edit the code, then run it</span></header>
+    <label class="f" for="rn-code">Code</label>
+    <textarea id="rn-code" class="in" rows="${Math.min(16, start.split("\n").length + 2)}" spellcheck="false" style="font-family:var(--f-mono);font-size:.86rem;tab-size:4"></textarea>
+    <label class="f" for="rn-in">Answers for input(), one per line</label>
+    <textarea id="rn-in" class="in" rows="2" spellcheck="false" style="font-family:var(--f-mono);font-size:.86rem"></textarea>
+    <div class="row"><a class="btn primary" id="rn-pt" target="_blank" rel="noopener" href="https://pythontutor.com/">Step through in Python Tutor ↗</a><button type="button" class="btn" id="rn-copy">Copy code</button><button type="button" class="btn" id="rn-reset">Reset code</button></div>
+    <p class="note" id="rn-status" aria-live="polite"></p>
+    <details class="predict"><summary>Two ways to run this code</summary><ul class="sol" style="margin-top:6px">
+      <li data-n="1"><span><b>Python Tutor</b> (free, no account): runs your code line by line and draws every variable. Your answers for <code>input()</code> are sent along too. It opens in a new tab. It can't open files or draw charts.</span></li>
+      <li data-n="2"><span><b>VS Code or PyCharm</b>: press Copy code, then create a new file in your week folder (for example <code>week3/try_it.py</code>), paste, save, and press ▶ Run. Type the input() answers in the terminal.</span></li></ul></details>`;
+  const $ = q => el.querySelector(q);
+  $("#rn-code").value = start; $("#rn-in").value = RUN_INPUTS[w.id] || "";
+  const update = () => {
+    const code = $("#rn-code").value, inputs = $("#rn-in").value.split("\n"); while (inputs.length && inputs[inputs.length - 1] === "") inputs.pop();
+    $("#rn-pt").href = "https://pythontutor.com/visualize.html#code=" + encodeURIComponent(code) + "&cumulative=false&curInstr=0&heapPrimitives=nevernest&mode=display&origin=opt-frontend.js&py=3&rawInputLstJSON=" + encodeURIComponent(JSON.stringify(inputs)) + "&textReferences=false";
+    $("#rn-status").textContent = /\bopen\(|matplotlib|pandas|csv\.reader|json\.load/.test(code) ? "This code reads a file or draws a chart, which Python Tutor can't do. Copy it into VS Code or PyCharm instead." : "";
+  };
+  update(); $("#rn-code").addEventListener("input", update); $("#rn-in").addEventListener("input", update);
+  $("#rn-code").addEventListener("keydown", e => { if (e.key === "Tab" && !e.shiftKey) { e.preventDefault(); const t = e.target, s = t.selectionStart; t.setRangeText("    ", s, t.selectionEnd, "end"); update(); } });
+  $("#rn-reset").onclick = () => { $("#rn-code").value = start; $("#rn-in").value = RUN_INPUTS[w.id] || ""; update(); };
+  $("#rn-copy").onclick = () => { const t = $("#rn-code").value, ok = () => { $("#rn-status").textContent = "Copied. Paste it into a new .py file in VS Code or PyCharm."; }, manual = () => { $("#rn-code").focus(); $("#rn-code").select(); $("#rn-status").textContent = "Selected. Press Ctrl+C (Cmd+C on a Mac) to copy."; };
+    try { navigator.clipboard.writeText(t).then(ok, manual); } catch (e) { manual(); } };
+}
+
+/* ---------- presenter mode ---------- */
+const Present = (() => {
+  let idx = 0, seg = 0, left = 0, timer = null, secs = [];
+  const bar = () => document.getElementById("pbar");
+  const sections = () => [...document.querySelectorAll("#week .grid > .col:first-child > *")].filter(s => !s.hidden);
+  const name = s => (s.querySelector("h3")?.textContent || (s.classList.contains("idea") ? "The big idea" : "Section")).trim();
+  const plan = () => { const w = WEEKS.find(x => x.id === current()); return (w.plan || STD_PLAN); };
+  const fmt = n => `${Math.floor(n / 60)}:${String(n % 60).padStart(2, "0")}`;
+  function show() {
+    secs = sections(); idx = Math.max(0, Math.min(idx, secs.length - 1));
+    secs.forEach((s, i) => s.classList.toggle("pres-on", i === idx));
+    const b = bar(); if (!b) return;
+    b.querySelector("#pb-pos").textContent = `${idx + 1} / ${secs.length} · ${name(secs[idx])}`;
+    b.querySelector("#pb-prev").disabled = idx === 0; b.querySelector("#pb-next").disabled = idx === secs.length - 1;
+    window.scrollTo({ top: 0 });
+  }
+  function tick() { if (left > 0) left--; else { clearInterval(timer); timer = null; } drawTimer(); }
+  function drawTimer() { const p = plan()[seg]; const b = bar(); if (!b || !p) return; b.querySelector("#pb-seg").textContent = `${p[0]}`; b.querySelector("#pb-time").textContent = fmt(left); b.querySelector("#pb-time").style.color = left < 60 ? "var(--bad)" : "inherit"; b.querySelector("#pb-go").textContent = timer ? "Pause" : "Start"; }
+  function setSeg(n) { const P = plan(); seg = (n + P.length) % P.length; left = P[seg][1] * 60; drawTimer(); }
+  return {
+    on() { document.documentElement.classList.add("present"); idx = 0; setSeg(0); show(); document.getElementById("present").setAttribute("aria-pressed", "true"); },
+    off() { document.documentElement.classList.remove("present"); document.querySelectorAll(".pres-on").forEach(s => s.classList.remove("pres-on")); clearInterval(timer); timer = null; document.getElementById("present").setAttribute("aria-pressed", "false"); },
+    reset() { idx = 0; setSeg(0); show(); },
+    next() { idx++; show(); }, prev() { idx--; show(); },
+    go() { if (timer) { clearInterval(timer); timer = null; } else timer = setInterval(tick, 1000); drawTimer(); },
+    skip() { clearInterval(timer); timer = null; setSeg(seg + 1); }
+  };
+})();
+
+/* ---------- "stuck?" flags (sync to tutor when the page allows it) ---------- */
+function renderStuck(w) {
+  const el = document.getElementById("stuck"); if (!el) return;
+  const opts = ["The big idea", ...(w.lessons || []).map(l => "Lesson: " + l.name), "Playground", "Run it yourself", "Put the lines in order", "Quick quiz", "Something else"];
+  el.innerHTML = `<h3 id="st-h">Stuck on something?</h3><span class="note">Tell your tutor what to go over on Saturday</span>
+    <label class="f" for="st-s">Which part</label><select class="in" id="st-s">${opts.map(o => `<option>${esc(o)}</option>`).join("")}</select>
+    <label class="f" for="st-n">What's confusing? (optional)</label><input class="in" id="st-n" maxlength="140" placeholder="e.g. why the loop stops at 3">
+    <button type="button" class="btn primary" id="st-go">Flag it</button><p class="note" id="st-msg" aria-live="polite"></p>`;
+  el.querySelector("#st-go").onclick = async () => {
+    const f = { w: w.id, s: el.querySelector("#st-s").value, n: el.querySelector("#st-n").value.trim().slice(0, 140), t: Date.now() };
+    Sync.flags.push(f); Sync.flags = Sync.flags.slice(-30); store.set("spl-flags", Sync.flags);
+    el.querySelector("#st-n").value = "";
+    const sent = await Sync.push();
+    el.querySelector("#st-msg").textContent = sent ? "Sent to your tutor. Thanks!" : "Saved on this device. Mention it at the start of Saturday's session.";
+  };
+}
+
+/* ---------- class sync + tutor dashboard (artifact db; absent elsewhere) ---------- */
+const Sync = {
+  db: null, user: null, uid: null, writable: false, tutor: false, flags: store.get("spl-flags", []), timer: null,
+  async init() {
+    if (!window.claude || typeof window.claude.use !== "function") return;
+    const [db, user] = await Promise.all([window.claude.use("db"), window.claude.use("user")]);
+    this.db = db; this.user = user; if (!db) return;
+    db.doc("settings/class").onSnapshot(s => { const wk = s.exists && s.data().week; if (wk && WEEKS.some(x => x.id === wk) && wk !== classWeek) { classWeek = wk; if (!location.hash) renderWeek(current()); else renderRoute(current()); Tutor.drawWeek(); } }, () => {});
+    this.uid = user ? await user.id() : null;
+    this.writable = !!this.uid;
+    this.tutor = user ? await user.canEdit() : false;
+    if (this.tutor) Tutor.enable();
+  },
+  push() {
+    if (!this.db || !this.uid || !this.writable) return Promise.resolve(false);
+    clearTimeout(this.timer);
+    return new Promise(res => { this.timer = setTimeout(async () => {
+      try { await this.db.doc("progress/" + this.uid).set({ weeks: done, quiz: store.get("spl-quiz", {}), flags: this.flags, updated: Date.now() }); document.getElementById("syncnote").hidden = false; res(true); }
+      catch (e) { if (e && e.code === "invalid_argument") this.writable = false; res(false); }
+    }, 800); });
+  }
+};
+
+const Tutor = {
+  reg: { students: [], done: {} }, progress: [], tab: "register", subscribed: false,
+  enable() {
+    const b = document.getElementById("tutorBtn"); b.hidden = false;
+    b.onclick = () => { const p = document.getElementById("tutor"); p.hidden = !p.hidden; b.setAttribute("aria-pressed", String(!p.hidden)); if (!p.hidden) { this.subscribe(); this.draw(); } };
+  },
+  subscribe() {
+    if (this.subscribed) return; this.subscribed = true;
+    const loading = setTimeout(() => { const n = document.getElementById("tu-load"); if (n) n.textContent = "Class data can't be reached yet. What you see may be out of date."; }, 10000);
+    Sync.db.doc("class/register").onSnapshot(s => { clearTimeout(loading); const d = s.exists ? s.data() : {}; this.reg = { students: d.students || [], done: d.done || {} }; this.draw(); }, () => clearTimeout(loading));
+    Sync.db.collection("progress").onSnapshot(s => { this.progress = s.docs.filter(d => d.exists).map(d => ({ id: d.id, ...d.data() })); this.draw(); }, () => {});
+  },
+  async saveReg() { try { await Sync.db.doc("class/register").set({ students: this.reg.students, done: this.reg.done }); } catch (e) { const n = document.getElementById("tu-load"); if (n) n.textContent = "Couldn't save the register. Try again."; } },
+  drawWeek() { const s = document.getElementById("tu-week"); if (s) s.value = classWeek; },
+  async draw() {
+    const el = document.getElementById("tutor"); if (!el || el.hidden) return;
+    const fa = document.activeElement, fk = fa && el.contains(fa) && fa.dataset ? (fa.dataset.s !== undefined ? `[data-s="${fa.dataset.s}"][data-w="${fa.dataset.w}"]` : fa.id ? "#" + fa.id : null) : null;
+    const weeks = WEEKS.map(w => w.id), R = this.reg, P = this.progress;
+    const names = P.length && Sync.user ? await Sync.user.profiles(P.map(p => p.id)) : {};
+    const pct = id => R.students.length ? Math.round(R.students.filter(s => R.done[s]?.[id]).length / R.students.length * 100) : 0;
+    const qz = P.flatMap(p => Object.entries(p.quiz || {}));
+    const flags = P.flatMap(p => (p.flags || []).map(f => ({ ...f, who: p.id }))).sort((a, b) => b.t - a.t);
+    el.innerHTML = `<header><h2 style="font-size:1.4rem">Tutor dashboard</h2><span class="note">Only you and your editors see this. <span id="tu-load"></span></span></header>
+      <div class="row"><label class="f" for="tu-week" style="flex-direction:row">This Saturday is
+        <select class="in" id="tu-week" style="width:auto">${WEEKS.map(w => `<option value="${w.id}" ${w.id === classWeek ? "selected" : ""}>${w.reading ? "Reading week" : "Week " + w.id}: ${esc(w.short)}</option>`).join("")}</select></label>
+        <span class="note">Changes the "This Saturday" marker for every student, with no republishing.</span></div>
+      <div class="seg" id="tu-tabs">${[["register", "Class register"], ["synced", `Synced students (${P.length})`], ["flags", `Flags (${flags.length})`]].map(([k, n]) => `<button type="button" data-t="${k}" aria-pressed="${this.tab === k}">${n}</button>`).join("")}</div>
+      <div id="tu-body" style="min-width:0"></div>`;
+    const body = el.querySelector("#tu-body");
+    if (this.tab === "register") {
+      body.innerHTML = `<div class="row"><label class="f" for="tu-add" style="flex:1 1 200px">Add a student (first name or initials) <input class="in" id="tu-add" maxlength="40"></label><button class="btn primary" type="button" id="tu-addb">Add</button></div>
+        ${R.students.length ? `<div style="overflow-x:auto"><table class="reg"><tr><th>Student</th>${weeks.map(id => `<th>${id === "R" ? "RW" : id}</th>`).join("")}<th></th></tr>
+          ${R.students.map((s, si) => `<tr><td>${esc(s)}</td>${weeks.map(id => `<td><input type="checkbox" aria-label="${esc(s)} finished ${id === "R" ? "reading week" : "week " + id}" data-s="${si}" data-w="${id}" ${R.done[s]?.[id] ? "checked" : ""}></td>`).join("")}<td><button class="btn" type="button" data-del="${si}" aria-label="Remove ${esc(s)}" style="padding:2px 8px">×</button></td></tr>`).join("")}
+          <tr><td><b>Class %</b></td>${weeks.map(id => `<td class="mono" style="font-size:.75rem">${pct(id)}</td>`).join("")}<td></td></tr></table></div>` : `<p class="note">No students yet. Add each student's name, then tick the weeks they've completed. Ticks save straight away.</p>`}`;
+      body.querySelector("#tu-addb").onclick = () => { const v = body.querySelector("#tu-add").value.trim(); if (!v || R.students.includes(v)) return; R.students.push(v); this.saveReg(); this.draw(); };
+      body.onchange = e => { const t = e.target; if (t.dataset.s === undefined) return; const s = R.students[+t.dataset.s]; R.done[s] = { ...(R.done[s] || {}), [t.dataset.w]: t.checked }; this.saveReg(); };
+      body.onclick = e => { const b = e.target.closest("[data-del]"); if (!b) return; const s = R.students[+b.dataset.del]; if (b.dataset.sure !== "1") { b.dataset.sure = "1"; b.textContent = "Remove?"; return; } R.students.splice(+b.dataset.del, 1); delete R.done[s]; this.saveReg(); this.draw(); };
+    } else if (this.tab === "synced") {
+      body.innerHTML = P.length ? `<div style="overflow-x:auto"><table class="reg"><tr><th>Student</th>${weeks.map(id => `<th>${id === "R" ? "RW" : id}</th>`).join("")}<th>Quiz avg</th><th>Last active</th></tr>
+        ${P.map(p => { const q = Object.entries(p.quiz || {}); const avg = q.length ? (q.reduce((a, [k, v]) => a + v / ((QUIZ[k] || []).length || (k === "12" ? 10 : 8)), 0) / q.length * 100).toFixed(0) + "%" : "–"; return `<tr><td class="who" data-id="${esc(p.id)}"></td>${weeks.map(id => `<td>${p.weeks?.[id] ? "●" : "·"}</td>`).join("")}<td class="mono">${avg}</td><td class="note">${p.updated ? new Date(p.updated).toLocaleDateString() : ""}</td></tr>`; }).join("")}</table></div>`
+        : `<p class="note">No students have synced yet. Progress syncs only for students whose claude.ai access lets them save to this page (Contributor or above in your organization). Everyone else keeps progress on their own device, so use the Class register for them.</p>`;
+      body.querySelectorAll(".who").forEach(td => { td.textContent = names[td.dataset.id]?.name || "Student"; });
+    } else {
+      body.innerHTML = flags.length ? `<ul class="tasks">${flags.slice(0, 60).map(f => `<li><span><span class="lvl">${f.w === "R" ? "Reading week" : "Week " + esc(f.w)} · ${esc(f.s)} · <span class="who" data-id="${esc(f.who)}"></span> · ${new Date(f.t).toLocaleDateString()}</span><span class="fl-note"></span></span></li>`).join("")}</ul>` : `<p class="note">No flags yet. When a synced student presses "Flag it", it appears here.</p>`;
+      body.querySelectorAll(".who").forEach(s => { s.textContent = names[s.dataset.id]?.name || "Student"; });
+      body.querySelectorAll(".fl-note").forEach((s, i) => { s.textContent = flags[i].n || "(no note)"; });
+    }
+    el.querySelector("#tu-tabs").onclick = e => { const b = e.target.closest("[data-t]"); if (b) { this.tab = b.dataset.t; this.draw(); } };
+    if (fk) el.querySelector(fk)?.focus();
+    el.querySelector("#tu-week").onchange = async e => { const v = e.target.value; classWeek = v; renderRoute(current()); try { await Sync.db.doc("settings/class").set({ week: v }); } catch (_) {} };
+  }
+};
+
+function current() { const h = location.hash.replace("#week-", ""); return WEEKS.some(w => w.id === h) ? h : store.get("spl-last", classWeek); }
 function go(id) { store.set("spl-last", id); if (location.hash !== "#week-" + id) location.hash = "week-" + id; else renderWeek(id); }
 
 document.getElementById("route").addEventListener("click", e => { const b = e.target.closest("button[data-w]"); if (b) { go(b.dataset.w); document.getElementById("week").scrollIntoView({ behavior: reduce ? "auto" : "smooth" }); } });
 window.addEventListener("hashchange", () => renderWeek(current()));
 document.getElementById("week").addEventListener("change", e => {
-  if (e.target.id === "mark-done") { const id = current(); done[id] = e.target.checked; store.set("spl-done", done); renderRoute(id); }
+  if (e.target.id === "mark-done") { const id = current(); done[id] = e.target.checked; store.set("spl-done", done); renderRoute(id); Sync.push(); }
   if (e.target.dataset && e.target.dataset.k) { taskState[e.target.dataset.k] = e.target.checked; store.set("spl-tasks", taskState); }
 });
 document.addEventListener("keydown", e => {
@@ -1955,5 +2520,9 @@ const setBig = on => { document.documentElement.classList.toggle("big", on); bt.
 bt.addEventListener("click", () => setBig(!document.documentElement.classList.contains("big")));
 setBig(store.get("spl-big", false));
 renderWeek(current());
+document.getElementById("present").onclick = () => document.documentElement.classList.contains("present") ? Present.off() : Present.on();
+[["pb-prev", () => Present.prev()], ["pb-next", () => Present.next()], ["pb-go", () => Present.go()], ["pb-skip", () => Present.skip()], ["pb-exit", () => Present.off()]].forEach(([id, f]) => document.getElementById(id).onclick = f);
+document.addEventListener("keydown", e => { if (!document.documentElement.classList.contains("present") || /INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return; if (e.key === "ArrowRight" || e.key === "PageDown") { e.preventDefault(); Present.next(); } if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); Present.prev(); } if (e.key === "Escape") Present.off(); });
+Sync.init();
 })();
 </script>

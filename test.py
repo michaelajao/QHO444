@@ -74,10 +74,30 @@
     
     
     
-for count in range(0, 100, 1):
-    print("#########")
-    print("#       #")
-    print("# O   O #")
-    print("|   V   |")
-    print("|  ---  |")
-    print("|_______|")
+# for count in range(0, 100, 1):
+#     print("#########")
+#     print("#       #")
+#     print("# O   O #")
+#     print("|   V   |")
+#     print("|  ---  |")
+#     print("|_______|")
+
+
+
+
+# The function
+from unicodedata import name
+
+
+def greet_user():
+    print("Please enter your name")
+    name = input()
+    print("Hello", name)
+
+
+
+greet_user()
+
+greet_user()
+
+greet_user()

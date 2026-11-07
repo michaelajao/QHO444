@@ -36,24 +36,34 @@
 # sound_indentifier("breaking of rocks")
 
 
-def sum_squares(a, b, c):
+# def sum_squares(a, b, c):
     
-    sum = a**2 + b**2 + c**2
-    return print(sum)
+#     sum = a**2 + b**2 + c**2
+#     return print(sum)
     
     
-sum_squares(3, 9, 5)
+# sum_squares(3, 9, 5)
 
 
-def display_box(name):
-  message = f"* Hello {name} *"
-  print("*" * len(message))
-  print(message)
-  print("*" * len(message))
+# def display_box(name):
+#   message = f"* Hello {name} *"
+#   print("*" * len(message))
+#   print(message)
+#   print("*" * len(message))
   
-def greet_user():
-  print("Please enter your name")
-  name = input()
-  display_box(name)
+# def greet_user():
+#   print("Please enter your name")
+#   name = input()
+#   display_box(name)
   
-greet_user()
+# greet_user()
+
+
+def listen():
+  print("What sound did you hear?")
+  sound = input()
+  print(f"That was a loud {sound}!")
+  
+  
+
+listen()
